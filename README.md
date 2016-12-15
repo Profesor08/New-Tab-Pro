@@ -11,3 +11,6 @@ Features
   - Flying Through Space
   - Clouds
 - Control Panel
+
+**Preview:**
+![Screenshot](http://image.prntscr.com/image/4a6c5fedeed74b54bffff5ffaf95f042.png)

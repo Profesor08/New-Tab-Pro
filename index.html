@@ -14,6 +14,7 @@
   <script type="text/javascript" src="assets/js/external/jquery-3.1.1.min.js"></script>
   <script type="text/javascript" src="assets/js/external/jquery-ui-1.12.1/jquery-ui.min.js"></script>
   
+  <script type="text/javascript" src="assets/js/lib/Star.js"></script>
   <script type="text/javascript" src="assets/js/lib/FlyingThroughTheSpace.js"></script>
   <script type="text/javascript" src="assets/js/lib/Snow.js"></script>
   <script type="text/javascript" src="assets/js/lib/Clouds.js"></script>
@@ -46,29 +47,29 @@
     <button v-on:click="showCurrency(!active)" v-bind:class="{ active : active}">Currency</button>
   </template>
   
+  <template id="site-resize">
+    <div id="site-button-size" class="slider">
+      <div class="slider_value">{{ size }}</div>
+    </div>
+  </template>
+  
   <template id="options-menu">
     <div v-bind:class="{ active: showMenu }" class="menu">
       <div v-on:click="showMenu = !showMenu" class="close-menu">
         <span class="fa fa-remove"></span>
         <span class="fa fa-bars"></span>
       </div>
-    
-      <div id="site-button-size" class="slider">
-        <div class="slider_value">175</div>
-      </div>
-    
-      <div id="site-columns-count" class="slider">
-        <div class="slider_value">5</div>
-      </div>
+      
+      <site-resize></site-resize>
     
       <div class="menu-items">
         <sites-button></sites-button>
         <microphone-button></microphone-button>
+        <weather-button></weather-button>
         <currency-button></currency-button>
         <space-button></space-button>
         <snow-button></snow-button>
         <clouds-button></clouds-button>
-        <weather-button></weather-button>
       </div>
     </div>
   </template>
@@ -82,8 +83,8 @@
   
   <template id="sites">
     <div v-if="active" class="tabs">
-      <div class="content">
-        <div v-for="site in sites" v-bind:class="site.class" class="site">
+      <div class="content" v-bind:style="{ width: contentWidth + 'px' }">
+        <div v-for="site in sites" v-bind:class="site.class" v-bind:style="{ width: size + 'px', height: size / 1.5 + 'px' }" class="site">
           <div class="name">{{ site.name }}</div>
           <a class="link" v-bind:href="site.url">
             <div></div>

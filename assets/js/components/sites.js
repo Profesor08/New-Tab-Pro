@@ -4,6 +4,8 @@
 
 var sitesData = {
   active: true,
+  size: 175,
+  contentWidth: 1000,
   sites: [
     {class: "google", name: "Google", url: "https://www.google.ru"},
     {class: "torrents", name: "Torrentsmd", url: "https://torrentsmd.com/"},
@@ -33,7 +35,70 @@ Vue.component("sites", {
 
   created: function ()
   {
+
+    // window.addEventListener("resize", () =>
+    // {
+    //   if (window.innerWidth < 1520)
+    //   {
+    //     let count = Math.floor((window.innerWidth - 300) / this.size) - 2;
+    //     let width = count * 10 + count * this.size + this.size / 2;
+    //
+    //     if (width < this.size + 10)
+    //     {
+    //       width = this.size + 10;
+    //     }
+    //
+    //     this.contentWidth = width;
+    //   }
+    //   else
+    //   {
+    //     this.contentWidth = window.innerWidth;
+    //   }
+    // });
+
     console.log("Sites component loaded.");
+  }
+});
+
+Vue.component("site-resize", {
+  template: "#site-resize",
+
+  data: function ()
+  {
+    return sitesData;
+  },
+
+  methods: {
+
+  },
+
+  mounted: function ()
+  {
+    $("#site-button-size").slider({
+      orientation: "horizontal",
+      min: 75,
+      max: 250,
+      value: this.size,
+      step: 1,
+      slide: (event, ui) =>
+      {
+        this.size = ui.value;
+      },
+      change: (event, ui) =>
+      {
+        localStorage["siteSize"] = ui.value;
+      }
+    });
+  },
+
+  created: function ()
+  {
+    if ('siteSize' in localStorage)
+    {
+      this.size = parseInt(localStorage["siteSize"]);
+    }
+
+    console.log("Site resize slider component loaded.");
   }
 });
 

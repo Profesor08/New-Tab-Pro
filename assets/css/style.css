@@ -220,6 +220,12 @@ canvas#FlyingThroughTheSpace.active, canvas#Snow.active, canvas#Clouds.active {
   flex: 1;
 }
 
+/*@media (max-width: 1000px) {*/
+  /*.content {*/
+    /*display: none;*/
+  /*}*/
+/*}*/
+
 .site {
   width: 175px;
   height: 116px;

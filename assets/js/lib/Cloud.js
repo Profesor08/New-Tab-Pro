@@ -7,8 +7,6 @@ class Cloud
 
     this.options = options;
 
-    window.cloudOptions = this.options;
-
     this.image = null;
     this.loaded = false;
 

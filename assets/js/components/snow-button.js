@@ -40,7 +40,7 @@ Vue.component("snow-button", {
     this.canvas.setAttribute("id", this.canvas_id);
     document.body.appendChild(this.canvas);
 
-    this.snow = new Snow("#" + this.canvas_id, {
+    this.snow = new Snowfall("#" + this.canvas_id, {
       images: [
         "assets/images/flakes/flake1.png",
         "assets/images/flakes/flake2.png",

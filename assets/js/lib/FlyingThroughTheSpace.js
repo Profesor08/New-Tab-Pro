@@ -1,12 +1,11 @@
 
 class FlyingThroughTheSpace {
 
-  constructor(element_id, options)
+  constructor(canvas_id, options)
   {
     this.options = {
       speed: 1,
       count: 10,
-      size: 2,
       background: 'rgba(0, 0, 0, 1)',
       backgroundOpacity: 'rgba(0, 0, 0, 1)',
       verticalScale: 4,
@@ -38,7 +37,7 @@ class FlyingThroughTheSpace {
       }
     }
 
-    this.ctx = document.querySelector(element_id).getContext("2d");
+    this.ctx = document.querySelector(canvas_id).getContext("2d");
 
     this.run = true;
 

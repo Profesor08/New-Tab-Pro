@@ -6,7 +6,38 @@ class Star {
   constructor(ctx, options)
   {
     this.ctx = ctx;
-    this.options = options;
+
+    this.options = {
+      speed: 1,
+      verticalScale: 4,
+      horizontalScale: 4,
+      distance: 12,
+      colors: [
+        "#9BB0FF",
+        "#AABFFF",
+        "#C8D6FD",
+        "#F8F7FD",
+        //"#FCFFD4",
+        //"#FEF4EA",
+        //"#FFF3A1",
+        //"#FED2A3",
+        //"#FFA350",
+        //"#FECB72",
+        //"#FF5E53"
+      ]
+    };
+
+    if (options !== null)
+    {
+      for (var prop in this.options)
+      {
+        if (this.options.hasOwnProperty(prop) && options.hasOwnProperty(prop))
+        {
+          this.options[prop] = options[prop];
+        }
+      }
+    }
+
     this.reset();
   }
 

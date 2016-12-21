@@ -11,12 +11,12 @@ Features:
   - Flying Through Space
   - Clouds
 - Control Panel
+- Elements resizing
 
 Upcoming features:
 - Background color/image changing
 - Custom website buttons adding
 - Color theme changing
-- Elements resizing
 - Elements placement
 
 **Preview:**

@@ -4,10 +4,10 @@ class FlyingThroughTheSpace {
   constructor(canvas_id, options)
   {
     this.options = {
+      experimental: false,
       speed: 1,
       count: 10,
       background: 'rgba(0, 0, 0, 1)',
-      backgroundOpacity: 'rgba(0, 0, 0, 1)',
       verticalScale: 4,
       horizontalScale: 4,
       distance: 12,
@@ -28,7 +28,7 @@ class FlyingThroughTheSpace {
 
     if (options !== null)
     {
-      for (var prop in this.options)
+      for (let prop in this.options)
       {
         if (this.options.hasOwnProperty(prop) && options.hasOwnProperty(prop))
         {
@@ -45,9 +45,14 @@ class FlyingThroughTheSpace {
 
     this.updateCanvasSize();
 
-    for (var i = 0; i < this.options.count; i++)
+    for (let i = 0; i < this.options.count; i++)
     {
       this.stars.push(new Star(this.ctx, this.options));
+    }
+
+    for (let i = 1.11; i < 2.718281828459045; i += 0.543656365691809)
+    {
+      console.log(Math.log(i));
     }
 
     window.addEventListener("resize", () => this.updateCanvasSize());
@@ -73,7 +78,7 @@ class FlyingThroughTheSpace {
   {
     this.run = false;
 
-    for (var i = 0; i < this.stars.length; i++)
+    for (let i = 0; i < this.stars.length; i++)
     {
       this.stars[i].reset();
     }
@@ -92,12 +97,28 @@ class FlyingThroughTheSpace {
   {
     if (this.run)
     {
-      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-      this.ctx.fillStyle = this.options.backgroundOpacity;
-      this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-      this.ctx.translate(this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
 
-      for (var i = 0; i < this.stars.length; i++)
+      if (this.options.experimental)
+      {
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this.ctx.save();
+        this.ctx.fillStyle = this.options.background;
+        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.ctx.restore();
+        this.ctx.translate(this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
+      }
+      else
+      {
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this.ctx.save();
+        this.ctx.globalAlpha = 0.3;
+        this.ctx.fillStyle = this.options.background;
+        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.ctx.restore();
+        this.ctx.translate(this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
+      }
+
+      for (let i = 0; i < this.stars.length; i++)
       {
         this.stars[i].draw();
       }

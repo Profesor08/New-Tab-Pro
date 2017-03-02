@@ -42,9 +42,9 @@ Vue.component("space-button", {
 
     this.space = new FlyingThroughTheSpace("#" + this.canvas_id, {
       speed: 0.025,
-      count: 500,
-      background: "rgba(0, 0, 10, 1)",
-      backgroundOpacity: "rgba(0, 0, 10, 0.2)"
+      count: 300,
+      background: sitesData.pageBackgroundColor,
+      experimental: true
     });
 
     if ("showSpace" in localStorage)

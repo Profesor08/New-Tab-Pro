@@ -2,7 +2,7 @@
  * Created by Profesor08 on 14.12.2016.
  */
 
-var currencyData = {
+const currencyData = {
   active: true,
   currencyList: null
 };
@@ -29,8 +29,8 @@ Vue.component("currency-button", {
 
     getData: function (xml)
     {
-      var data = [];
-      var volutes = ["USD", "EUR", "RUB", "UAH", "RON", "GBP", "CHF"];
+      let data = [];
+      let volutes = ["USD", "EUR", "RUB", "UAH", "RON", "GBP", "CHF"];
 
       [].forEach.call(xml.documentElement.childNodes, function (volute)
       {
@@ -54,7 +54,7 @@ Vue.component("currency-button", {
 
     loadCurrencyData: function ()
     {
-      this.$http.get("http://bnm.md/ru/official_exchange_rates?get_xml=1&date=" + new Date().toLocaleDateString()).then((res) =>
+      this.$http.get("https://www.bnm.md/ru/official_exchange_rates?get_xml=1&date=" + new Date().toLocaleDateString()).then((res) =>
       {
         this.currencyList = this.getData((new DOMParser()).parseFromString(res.data, "text/xml"));
       }, (res) => console.log(res));
@@ -92,6 +92,11 @@ Vue.component("currency", {
     resultChange: function (currency)
     {
       currency.nominal = (currency.result / currency.value).toFixed(2);
+    },
+
+    selectText: function (event)
+    {
+      event.target.select();
     }
   },
 

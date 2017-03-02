@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
   
-  <link type="text/css" rel="stylesheet" href="assets/fonts/font-awesome-4.5.0/css/font-awesome.min.css">
   <link type="text/css" rel="stylesheet" href="assets/js/external/jquery-ui-1.12.1/jquery-ui.min.css">
   <link type="text/css" rel="stylesheet" href="assets/js/external/jquery-ui-1.12.1/jquery-ui.structure.min.css">
   <link type="text/css" rel="stylesheet" href="assets/js/external/jquery-ui-1.12.1/jquery-ui.theme.min.css">
+  <link type="text/css" rel="stylesheet" href="assets/js/external/spectrum/spectrum.css">
   
+  <link type="text/css" rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link type="text/css" rel="stylesheet" href="assets/css/bootstrap.min.css">
   <link type="text/css" rel="stylesheet" href="assets/css/style.css">
   
   <script type="text/javascript" src="assets/js/external/vue.min.js"></script>
   <script type="text/javascript" src="assets/js/external/vue-resource.min.js"></script>
   <script type="text/javascript" src="assets/js/external/jquery-3.1.1.min.js"></script>
   <script type="text/javascript" src="assets/js/external/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="assets/js/external/spectrum/spectrum.js"></script>
+  <script type="text/javascript" src="assets/js/external/tinycolor.js"></script>
+  <script type="text/javascript" src="assets/js/external/js-cookie.js"></script>
   
   <script type="text/javascript" src="assets/js/lib/Star.js"></script>
   <script type="text/javascript" src="assets/js/lib/FlyingThroughTheSpace.js"></script>
@@ -49,10 +54,26 @@
     <button v-on:click="showCurrency(!active)" v-bind:class="{ active : active}">Currency</button>
   </template>
   
+  <template id="options-button">
+    <button v-on:click="showOptions(!options.active)" v-bind:class="{ active : options.active}">Options</button>
+  </template>
+  
   <template id="site-resize">
     <div id="site-button-size" class="slider">
       <div class="slider_value">{{ size }}</div>
     </div>
+  </template>
+  
+  <template id="site-border-color">
+    <div class="site-border-color" v-bind:style="{ background: siteBorderColor }"></div>
+  </template>
+  
+  <template id="site-background-color">
+    <div class="site-background-color" v-bind:style="{ background: siteBackgroundColor }"></div>
+  </template>
+  
+  <template id="page-background-color">
+    <div class="page-background-color" v-bind:style="{ background: pageBackgroundColor }"></div>
   </template>
   
   <template id="options-menu">
@@ -61,8 +82,16 @@
         <span class="fa fa-remove"></span>
         <span class="fa fa-bars"></span>
       </div>
-      
+
       <site-resize></site-resize>
+      
+      <div>
+        <site-border-color></site-border-color>
+        <site-background-color></site-background-color>
+        <page-background-color></page-background-color>
+      </div>
+      
+      <lang-switcher></lang-switcher>
     
       <div class="menu-items">
         <sites-button></sites-button>
@@ -72,6 +101,7 @@
         <space-button></space-button>
         <snow-button></snow-button>
         <clouds-button></clouds-button>
+        <options-button></options-button>
       </div>
     </div>
   </template>
@@ -86,18 +116,56 @@
   <template id="sites">
     <div v-if="active" class="tabs">
       <div class="content" v-bind:style="{ width: contentWidth + 'px' }">
-        <div v-for="site in sites" v-bind:class="site.class" v-bind:style="{ width: size + 'px', height: size / 1.5 + 'px' }" class="site">
+        <div v-for="(site, index) in sites" v-bind:style="{ width: size + 'px', height: size / 1.5 + 'px', borderColor: siteBorderColor, backgroundColor: siteBackgroundColor }" class="site">
           <div class="name">{{ site.name }}</div>
           <a class="link" v-bind:href="site.url">
-            <div></div>
+            <div v-bind:style="{ 'backgroundImage': 'url(' + site.image + ')'}"></div>
           </a>
+          <div v-if="options.active" v-on:click.prevent="deleteSite(index)" class="delete"><span class="fa fa-remove"></span></div>
+        </div>
+        <div v-if="options.active" v-on:click="options.addSiteDialog = true" v-bind:style="{ width: size + 'px', height: size / 1.5 + 'px' }" class="site add">
+          <span class="fa fa-plus"></span>
         </div>
       </div>
     </div>
   </template>
   
+  <template id="add-site-dialog">
+    <div v-if="options.addSiteDialog" class="addSiteDialog">
+      
+      
+      <div class="form-center">
+        <div class="form-container">
+          <div class="close" v-on:click="options.addSiteDialog = false"><span class="fa fa-remove"></span></div>
+          <form v-on:submit.prevent="addSite">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Name</label>
+              <input v-model="options.newSite.name" type="text" class="form-control" id="exampleInputEmail1" placeholder="Name" required>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">URL</label>
+              <input v-model="options.newSite.url" type="url" class="form-control" id="exampleInputPassword1" placeholder="http://example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputFile">Image url</label>
+              <input v-model="options.newSite.image" type="url" class="form-control" id="exampleInputFile" placeholder="http://example.com/image.png" required>
+            </div>
+            <button class="btn btn-success">Add Site</button>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </template>
+  
   <template id="microphone">
     <div v-if="active" v-on:click="startRecording" v-bind:class="{ recording: recording }" class="microphone"></div>
+  </template>
+  
+  <template id="lang-switcher">
+    <div v-if="active" class="lang-switcher">
+      <div v-if="lang">{{ lang.hello }}</div>
+    </div>
   </template>
   
   <template id="currency">
@@ -110,8 +178,8 @@
       </tr>
       <tr v-for="currency in currencyList">
         <td>{{ currency.charCode }}</td>
-        <td><input v-model="currency.nominal" @input="nominalChange(currency)" type="number" min="0" step="0.01"></td>
-        <td><input v-model="currency.result" @input="resultChange(currency)" type="number" min="0" step="0.01"></td>
+        <td><input v-on:dblclick="selectText($event)" v-model="currency.nominal" @input="nominalChange(currency)" type="number" min="0" step="0.01"></td>
+        <td><input v-on:dblclick="selectText($event)" v-model="currency.result" @input="resultChange(currency)" type="number" min="0" step="0.01"></td>
         <td>{{ currency.value }}</td>
       </tr>
     </table>
@@ -188,7 +256,7 @@
 </head>
 <body>
 
-<div id="app">
+<div id="app" v-bind:style="{ backgroundColor: sites.pageBackgroundColor }">
   
   <options-menu></options-menu>
   
@@ -201,9 +269,12 @@
   <currency></currency>
   
   <aimp></aimp>
+  
+  <add-site-dialog></add-site-dialog>
 
 </div>
 
+<script type="text/javascript" src="assets/js/components/common-data.js" defer></script>
 <script type="text/javascript" src="assets/js/components/options-menu.js" defer></script>
 <script type="text/javascript" src="assets/js/components/snow-button.js" defer></script>
 <script type="text/javascript" src="assets/js/components/space-button.js" defer></script>
@@ -213,6 +284,7 @@
 <script type="text/javascript" src="assets/js/components/voice-search.js" defer></script>
 <script type="text/javascript" src="assets/js/components/sites.js" defer></script>
 <script type="text/javascript" src="assets/js/components/aimp.js" defer></script>
+<script type="text/javascript" src="assets/js/components/lang.js" defer></script>
 <script type="text/javascript" src="assets/js/app.js" defer></script>
 </body>
 </html>

@@ -16,7 +16,7 @@
    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 
    "permissions": [
-      "bookmarks", "http://bnm.md/*", "http://worldweatheronline.com/", "http://sypexgeo.net/", "http://ajax.googleapis.com/*", "https://google.com/", "http://127.0.0.1/", "http://www.calend.ru/"
+      "bookmarks", "history", "https://www.bnm.md/*", "http://worldweatheronline.com/", "http://sypexgeo.net/", "http://ajax.googleapis.com/*", "https://google.com/", "http://127.0.0.1/", "http://www.calend.ru/"
    ],
    
    "version": "2.0.0",

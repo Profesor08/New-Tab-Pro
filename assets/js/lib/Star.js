@@ -8,6 +8,7 @@ class Star {
     this.ctx = ctx;
 
     this.options = {
+      experimental: false,
       speed: 1,
       verticalScale: 4,
       horizontalScale: 4,
@@ -38,6 +39,12 @@ class Star {
       }
     }
 
+    if (this.options.experimental)
+    {
+      this.queue = [];
+      this.opacity = [0.1, 0.2, 0.3, 0.5, 1];
+    }
+
     this.reset();
   }
 
@@ -54,6 +61,23 @@ class Star {
     this.y = this.rand(-this.ctx.canvas.height * this.options.verticalScale, this.ctx.canvas.height * this.options.verticalScale);
     this.z = this.rand(1, this.options.distance);
     this.color = this.getColor();
+
+    if (this.options.experimental)
+    {
+      this.queue = [];
+
+      for (let i = 0; i < 5; i++)
+      {
+        this.z -= this.options.speed;
+
+        this.queue.push({
+          x: this.x / this.z,
+          y: this.y / this.z,
+          x2: this.x / (this.z + this.options.speed * 0.50),
+          y2: this.y / (this.z + this.options.speed * 0.50)
+        });
+      }
+    }
   }
 
   getColor()
@@ -66,20 +90,50 @@ class Star {
 
     this.z -= this.options.speed;
 
-    let x = this.x / this.z;
-    let y = this.y / this.z;
-    let x2 = this.x / (this.z + this.options.speed * 0.50);
-    let y2 = this.y / (this.z + this.options.speed * 0.50);
-
-    this.ctx.strokeStyle = this.color;
-    this.ctx.beginPath();
-    this.ctx.moveTo(x, y);
-    this.ctx.lineTo(x2, y2);
-    this.ctx.stroke();
-
-    if (x < -this.halfHorizontal || x > this.halfHorizontal || y < -this.halfVertical || y > this.halfVertical)
+    if (this.options.experimental)
     {
-      this.reset();
+      this.queue.shift();
+
+      this.queue.push({
+        x: this.x / this.z,
+        y: this.y / this.z,
+        x2: this.x / (this.z + this.options.speed * 0.50),
+        y2: this.y / (this.z + this.options.speed * 0.50)
+      });
+
+      this.queue.forEach((e, i) =>
+      {
+        this.ctx.strokeStyle = this.color;
+        this.ctx.globalAlpha = this.opacity[i];
+        this.ctx.beginPath();
+        this.ctx.moveTo(e.x, e.y);
+        this.ctx.lineTo(e.x2, e.y2);
+        this.ctx.stroke();
+      });
+
+      if (this.queue[0].x < -this.halfHorizontal || this.queue[0].x > this.halfHorizontal || this.queue[0].y < -this.halfVertical || this.queue[0].y > this.halfVertical)
+      {
+        this.reset();
+      }
+    }
+    else
+    {
+
+      let x = this.x / this.z;
+      let y = this.y / this.z;
+      let x2 = this.x / (this.z + this.options.speed * 0.50);
+      let y2 = this.y / (this.z + this.options.speed * 0.50);
+
+      this.ctx.strokeStyle = this.color;
+      this.ctx.beginPath();
+      this.ctx.moveTo(x, y);
+      this.ctx.lineTo(x2, y2);
+      this.ctx.stroke();
+
+      if (x < -this.halfHorizontal || x > this.halfHorizontal || y < -this.halfVertical || y > this.halfVertical)
+      {
+        this.reset();
+      }
     }
   };
 

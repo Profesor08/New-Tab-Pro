@@ -12,11 +12,13 @@ Features:
   - Clouds
 - Control Panel
 - Elements resizing
+- Background color changing
+- Site button border color changing
+- Site button background color changing
+- Adding custom web site buttons
 
 Upcoming features:
-- Background color/image changing
-- Custom website buttons adding
-- Color theme changing
+- Multilingual support
 - Elements placement
 
 **Preview:**

@@ -50,11 +50,6 @@ class FlyingThroughTheSpace {
       this.stars.push(new Star(this.ctx, this.options));
     }
 
-    for (let i = 1.11; i < 2.718281828459045; i += 0.543656365691809)
-    {
-      console.log(Math.log(i));
-    }
-
     window.addEventListener("resize", () => this.updateCanvasSize());
   }
 

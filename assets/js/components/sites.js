@@ -66,6 +66,70 @@ Vue.component("sites", {
     }
   },
 
+  updated: function ()
+  {
+
+
+
+    if (this.options.active)
+    {
+      let config = {
+        align: "center",
+        animationSpeed: 150,
+        gutterX: 10,
+        gutterY: 10,
+        paddingX: 0,
+        paddingY: 0,
+        animateOnInit: true
+      };
+
+      if (this.hasOwnProperty("grid"))
+      {
+        this.grid.shapeshift(config);
+      }
+      else
+      {
+        this.grid = $(".sites-grid");
+
+        this.grid.shapeshift(config);
+
+        this.grid.on("ss-rearranged", (event) =>
+        {
+          let arrangedSites = [];
+
+          $(event.currentTarget).children(".site").each((index, element) =>
+          {
+            let orig = $(element).data("orig");
+
+            if (orig !== undefined)
+            {
+              $(element).attr("data-orig", index);
+
+              arrangedSites.push({
+                name: this.sites[orig].name,
+                url: this.sites[orig].url,
+                image:this.sites[orig].image
+              });
+            }
+          });
+
+          localStorage["webSites"] = JSON.stringify(arrangedSites);
+        });
+      }
+    }
+    else
+    {
+      if (this.hasOwnProperty("grid"))
+      {
+        this.grid.trigger("ss-destroy");
+      }
+    }
+
+
+
+
+  },
+
   created: function ()
   {
     console.log("Sites component loaded.");

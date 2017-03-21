@@ -16,6 +16,7 @@ Features:
 - Site button border color changing
 - Site button background color changing
 - Adding custom web site buttons
+- Changing sites buttons placement
 
 Upcoming features:
 - Multilingual support

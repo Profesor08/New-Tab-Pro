@@ -71,7 +71,7 @@ Vue.component("sites", {
 
 
 
-    if (this.options.active)
+    if (this.options.active && this.active)
     {
       let config = {
         align: "center",
@@ -83,17 +83,17 @@ Vue.component("sites", {
         animateOnInit: false
       };
 
-      if (this.hasOwnProperty("grid"))
+      if (this.sitesGrid !== null)
       {
-        this.grid.shapeshift(config);
+        this.sitesGrid.shapeshift(config);
       }
       else
       {
-        this.grid = $(".sites-grid");
+        this.sitesGrid = $(".sites-grid");
 
-        this.grid.shapeshift(config);
+        this.sitesGrid.shapeshift(config);
 
-        this.grid.on("ss-rearranged", (event) =>
+        this.sitesGrid.on("ss-rearranged", (event) =>
         {
           let arrangedSites = [];
 
@@ -119,14 +119,12 @@ Vue.component("sites", {
     }
     else
     {
-      if (this.hasOwnProperty("grid"))
+      if (this.sitesGrid !== null)
       {
-        this.grid.trigger("ss-destroy");
+        this.sitesGrid.trigger("ss-destroy");
+        this.sitesGrid = null;
       }
     }
-
-
-
 
   },
 
@@ -182,7 +180,13 @@ Vue.component("sites-button", {
   methods: {
     showSites: function (show)
     {
+      if (show === false && this.sitesGrid !== null)
+      {
+        this.sitesGrid.trigger("ss-destroy");
+      }
+
       this.active = show;
+
       localStorage["showSites"] = show;
     }
   },
@@ -195,27 +199,6 @@ Vue.component("sites-button", {
     }
 
     console.log("Sites button component loaded.");
-  }
-});
-
-Vue.component("options-button", {
-  template: "#options-button",
-
-  data: function ()
-  {
-    return commonData;
-  },
-
-  methods: {
-    showOptions: function (show)
-    {
-      this.options.active = show;
-    }
-  },
-
-  created: function ()
-  {
-    console.log("Options button component loaded.");
   }
 });
 

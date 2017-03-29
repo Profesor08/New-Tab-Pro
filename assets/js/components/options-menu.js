@@ -28,3 +28,24 @@ Vue.component("options-menu", {
     console.log("Menu component loaded.");
   }
 });
+
+Vue.component("options-button", {
+  template: "#options-button",
+
+  data: function ()
+  {
+    return commonData;
+  },
+
+  methods: {
+    showOptions: function (show)
+    {
+      this.options.active = show;
+    }
+  },
+
+  created: function ()
+  {
+    console.log("Options button component loaded.");
+  }
+});

@@ -9,6 +9,7 @@ const commonData = {
   siteBackgroundColor: "rgba(45, 45, 45, 0.4)",
   pageBackgroundColor: "rgba(0, 0, 10, 1)",
   pageBackgroundColorTransparent: "rgba(0, 0, 10, 0.2)",
+  sitesGrid: null,
   sites: [
     // {name: "Google", url: "https://www.google.ru", image: "assets/images/sites/google.png"},
     // {name: "Torrentsmd", url: "https://torrentsmd.com/", image: "assets/images/sites/torrentsmd.png"},

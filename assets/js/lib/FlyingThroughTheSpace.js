@@ -37,7 +37,12 @@ class FlyingThroughTheSpace {
       }
     }
 
-    this.ctx = document.querySelector(canvas_id).getContext("2d");
+    //this.ctx = document.querySelector(canvas_id).getContext("2d");
+
+    this.mainCanvas = document.querySelector(canvas_id);
+    this.mainCtx = this.mainCanvas.getContext("2d");
+
+    this.ctx = document.createElement("canvas").getContext("2d");
 
     this.run = true;
 
@@ -55,8 +60,10 @@ class FlyingThroughTheSpace {
 
   updateCanvasSize()
   {
-    this.ctx.canvas.width = this.ctx.canvas.parentNode.offsetWidth;
-    this.ctx.canvas.height = this.ctx.canvas.parentNode.offsetHeight;
+    this.mainCtx.canvas.width = this.mainCtx.canvas.parentNode.offsetWidth;
+    this.mainCtx.canvas.height = this.mainCtx.canvas.parentNode.offsetHeight;
+    this.ctx.canvas.width = this.mainCtx.canvas.parentNode.offsetWidth;
+    this.ctx.canvas.height = this.mainCtx.canvas.parentNode.offsetHeight;
     this.halfHorizontal = this.ctx.canvas.width / 2;
     this.halfVertical = this.ctx.canvas.height / 2;
     this.ctx.fillStyle = this.options.background;
@@ -117,6 +124,8 @@ class FlyingThroughTheSpace {
       {
         this.stars[i].draw();
       }
+
+      this.mainCtx.drawImage(this.ctx.canvas, 0, 0);
 
       window.requestAnimationFrame(() => this.draw());
     }

@@ -30,7 +30,7 @@ class Star {
 
     if (options !== null)
     {
-      for (var prop in this.options)
+      for (let prop in this.options)
       {
         if (this.options.hasOwnProperty(prop) && options.hasOwnProperty(prop))
         {
@@ -61,6 +61,7 @@ class Star {
     this.y = this.rand(-this.ctx.canvas.height * this.options.verticalScale, this.ctx.canvas.height * this.options.verticalScale);
     this.z = this.rand(1, this.options.distance);
     this.color = this.getColor();
+    this.ctx.strokeStyle = this.color;
 
     if (this.options.experimental)
     {
@@ -103,7 +104,6 @@ class Star {
 
       this.queue.forEach((e, i) =>
       {
-        this.ctx.strokeStyle = this.color;
         this.ctx.globalAlpha = this.opacity[i];
         this.ctx.beginPath();
         this.ctx.moveTo(e.x, e.y);

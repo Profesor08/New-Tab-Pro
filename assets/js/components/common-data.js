@@ -31,7 +31,7 @@ const commonData = {
     // {name: "League of Legends", url: "http://ru.leagueoflegends.com/", image: "http://i.imgur.com/3DeXQQW.png"}
   ],
   options: {
-    active: false,
+    active: true,
     addSiteDialog: false,
     newSite: {
       image: '',

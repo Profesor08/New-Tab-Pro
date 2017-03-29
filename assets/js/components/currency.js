@@ -10,6 +10,29 @@ Vue.component("currency-button", {
     return commonData;
   },
 
+  watch: {
+    "currencyData.volutes": function ()
+    {
+      if (this.currencyData.active)
+      {
+        this.loadCurrencyData();
+      }
+
+      localStorage["currencyVolutes"] = JSON.stringify(this.currencyData.volutes);
+    },
+
+
+    "currencyData.baseVolute": function ()
+    {
+      if (this.currencyData.active)
+      {
+        this.loadCurrencyData();
+      }
+
+      localStorage["currencyBaseVolute"] = this.currencyData.baseVolute;
+    }
+  },
+
   methods: {
 
     showCurrency: function (show)
@@ -25,15 +48,20 @@ Vue.component("currency-button", {
 
       this.$http.get(url + this.buildQuery(this.currencyData.volutes, this.currencyData.baseVolute) + urlParams).then((res) =>
       {
-        res.data.query.results.rate.forEach((rate) =>
+        if (res.data.query.results.rate.length)
         {
-          this.currencyData.currencyList.push({
-            name: rate.Name.split("/")[0],
-            nominal: parseFloat(1).toFixed(2),
-            result: parseFloat(rate.Rate).toFixed(2),
-            value: parseFloat(rate.Rate).toFixed(4),
+          this.currencyData.currencyList = [];
+
+          res.data.query.results.rate.forEach((rate) =>
+          {
+            this.currencyData.currencyList.push({
+              name: rate.Name.split("/")[0],
+              nominal: parseFloat(1).toFixed(2),
+              result: parseFloat(rate.Rate).toFixed(2),
+              value: parseFloat(rate.Rate).toFixed(4),
+            });
           });
-        });
+        }
       });
     },
 
@@ -47,9 +75,20 @@ Vue.component("currency-button", {
 
   created: function ()
   {
+
+    if ("currencyBaseVolute" in localStorage)
+    {
+      this.currencyData.baseVolute = localStorage["currencyBaseVolute"];
+    }
+
+    if ("currencyVolutes" in localStorage)
+    {
+      this.currencyData.volutes = JSON.parse(localStorage["currencyVolutes"]);
+    }
+
     if ("showCurrency" in localStorage)
     {
-      this.showCurrency(localStorage["showCurrency"] == "true");
+      this.showCurrency(localStorage["showCurrency"] === "true");
 
       if (this.currencyData.active)
       {
@@ -112,7 +151,7 @@ Vue.component("currency-options", {
   methods: {
     addVolute: function ()
     {
-      if (this.currencyData.addVolute.length && this.currencyData.volutes.indexOf(this.currencyData.addVolute) == -1)
+      if (this.currencyData.addVolute.length && this.currencyData.volutes.indexOf(this.currencyData.addVolute) <= -1)
       {
         this.currencyData.volutes.push(this.currencyData.addVolute);
       }

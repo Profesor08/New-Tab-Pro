@@ -122,6 +122,7 @@ Vue.component("sites", {
       if (this.sitesGrid !== null)
       {
         this.sitesGrid.trigger("ss-destroy");
+        this.sitesGrid.css("height", "");
         this.sitesGrid = null;
       }
     }

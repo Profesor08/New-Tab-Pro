@@ -3,27 +3,28 @@
  */
 
 
-var weatherData = {
-  active: true,
-  show: false,
-  city: null,
-  country: null,
-  condition: null,
-  temperature: null
-};
-
 Vue.component("weather-button", {
   template: '#weather-button',
 
   data: function ()
   {
-    return weatherData;
+    return commonData;
+  },
+
+  watch: {
+    lang: function (event)
+    {
+      if (this.weatherData.show)
+      {
+        this.loadWeatherData();
+      }
+    }
   },
 
   methods: {
     showWeather: function (show)
     {
-      this.active = show;
+      this.weatherData.active = show;
 
       if (show)
       {
@@ -31,7 +32,7 @@ Vue.component("weather-button", {
       }
       else
       {
-        this.show = false;
+        this.weatherData.show = false;
       }
 
       localStorage["showWeather"] = show;
@@ -48,6 +49,8 @@ Vue.component("weather-button", {
     loadWeatherData: function ()
     {
 
+      let lang = langData.language;
+
       this.$http.get('http://api.sypexgeo.net/json/').then((res) =>
       {
         let sypexgeo = res.data;
@@ -56,17 +59,40 @@ Vue.component("weather-button", {
             q: sypexgeo.country.capital_en,
             num_of_days: "1",
             format: "json",
-            lang: "ru"
+            lang: lang
           });
 
         this.$http.get(url).then((res) =>
         {
-          let lang = window.navigator.userLanguage || window.navigator.language;
-          this.country = sypexgeo.country["name_" + lang];
-          this.city = sypexgeo.country["capital_" + lang];
-          this.condition = res.data.data.current_condition[0].lang_ru[0].value;
-          this.temperature = res.data.data.current_condition[0].temp_C;
-          this.show = true;
+          if (sypexgeo.country["name_" + lang])
+          {
+            this.weatherData.country = sypexgeo.country["name_" + lang];
+          }
+          else
+          {
+            this.weatherData.country = sypexgeo.country["name_en"];
+          }
+
+          if (sypexgeo.country["capital_" + lang])
+          {
+            this.weatherData.city = sypexgeo.country["capital_" + lang];
+          }
+          else
+          {
+            this.weatherData.city = sypexgeo.country["capital_en"];
+          }
+
+          if (res.data.data.current_condition[0].hasOwnProperty("lang_" + lang))
+          {
+            this.weatherData.condition = res.data.data.current_condition[0]["lang_" + lang][0].value;
+          }
+          else
+          {
+            this.weatherData.condition = res.data.data.current_condition[0].weatherDesc[0].value;
+          }
+
+          this.weatherData.temperature = res.data.data.current_condition[0].temp_C;
+          this.weatherData.show = true;
         }, (res) => console.log(res));
       }, (res) => console.log(res));
     }
@@ -80,7 +106,7 @@ Vue.component("weather-button", {
     }
     else
     {
-      this.showCurrency(true);
+      this.showWeather(true);
     }
 
     console.log("Weather button component loaded.");
@@ -92,7 +118,7 @@ Vue.component("weather", {
 
   data: function ()
   {
-    return weatherData;
+    return commonData;
   },
 
   created: function ()

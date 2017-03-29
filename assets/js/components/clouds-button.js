@@ -6,12 +6,7 @@ Vue.component("clouds-button", {
 
   data: function ()
   {
-    return {
-      active: true,
-      clouds: null,
-      canvas_id: "Clouds",
-      canvas: null
-    }
+    return commonData
   },
 
   methods: {
@@ -19,16 +14,16 @@ Vue.component("clouds-button", {
     {
       if (show)
       {
-        this.canvas.classList.add("active");
-        this.clouds.start();
+        this.cloudsButton.canvas.classList.add("active");
+        this.cloudsButton.clouds.start();
       }
       else
       {
-        this.canvas.classList.remove("active");
-        this.clouds.stop();
+        this.cloudsButton.canvas.classList.remove("active");
+        this.cloudsButton.clouds.stop();
       }
 
-      this.active = show;
+      this.cloudsButton.active = show;
 
       localStorage["showClouds"] = show;
     }
@@ -36,11 +31,11 @@ Vue.component("clouds-button", {
 
   created: function ()
   {
-    this.canvas = document.createElement("canvas");
-    this.canvas.setAttribute("id", this.canvas_id);
-    document.body.appendChild(this.canvas);
+    this.cloudsButton.canvas = document.createElement("canvas");
+    this.cloudsButton.canvas.setAttribute("id", this.cloudsButton.canvas_id);
+    document.body.appendChild(this.cloudsButton.canvas);
 
-    this.clouds = new Clouds("#" + this.canvas_id, {
+    this.cloudsButton.clouds = new Clouds("#" + this.cloudsButton.canvas_id, {
       images: [
         "assets/images/clouds/cloud.png",
         "assets/images/clouds/dark_cloud.png",

@@ -3,9 +3,9 @@
  */
 
 let langData = {
-  language: 'en',
-  defaultLanguage: 'en',
-  allowedLanguages: ["en", 'ru'],
+  language: 'us',
+  defaultLanguage: 'us',
+  allowedLanguages: ["us", 'ru'],
   lang: null,
   active: true
 };
@@ -26,20 +26,29 @@ Vue.component("lang-switcher", {
         this.$http.get("assets/lang/lang-" + lang + ".json").then(function (res)
         {
           this.lang = JSON.parse(res.data);
+          commonData.lang = this.lang;
         });
       }
+    },
+
+    switchLang: function (lang)
+    {
+      localStorage["lang"] = lang;
+      this.language = lang;
+      this.loadLang(lang);
     }
   },
 
   created: function ()
   {
-
-    if (this.allowedLanguages.indexOf(Cookies.get("lang")) > -1)
+    if ("lang" in localStorage && this.allowedLanguages.indexOf(localStorage["lang"]) >= 0)
     {
-
+      this.language = localStorage["lang"];
+      this.loadLang(localStorage["lang"]);
     }
     else
     {
+      this.language = this.defaultLanguage;
       this.loadLang(this.defaultLanguage);
     }
 

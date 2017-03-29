@@ -28,6 +28,7 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  color: #FFFFFF;
 }
 
 body * {
@@ -232,12 +233,6 @@ canvas#FlyingThroughTheSpace.active, canvas#Snow.active, canvas#Clouds.active {
   display: block;
 }
 
-/*@media (max-width: 1000px) {*/
-/*.content {*/
-/*display: none;*/
-/*}*/
-/*}*/
-
 .site {
   width: 175px;
   height: 116px;
@@ -322,20 +317,21 @@ canvas#FlyingThroughTheSpace.active, canvas#Snow.active, canvas#Clouds.active {
   height: 100%;
   z-index: 100;
   background: rgba(0, 0, 0, 0.7);
+  color: #333333;
 }
 
-.addSiteDialog .close {
+.addSiteDialog .close-form {
   text-align: right;
   font-size: 30px;
+}
+
+.addSiteDialog .close-form .fa {
+  color: #737373;
+  transition: ease-in-out color 150ms;
   cursor: pointer;
 }
 
-.addSiteDialog .close .fa {
-  color: #737373;
-  transition: ease-in-out color 150ms;
-}
-
-.addSiteDialog .close .fa:hover {
+.addSiteDialog .close-form .fa:hover {
   color: #FF0000;
 }
 
@@ -347,6 +343,14 @@ canvas#FlyingThroughTheSpace.active, canvas#Snow.active, canvas#Clouds.active {
   transform: translateX(-50%) translateY(-50%);
   padding: 5px 15px 15px;
   background: white;
+}
+
+.addSiteDialog .volute-button {
+  margin: 0 5px 5px 0;
+}
+
+.addSiteDialog .volute-button:hover .fa {
+  color: #FF0000;
 }
 
 .weather {
@@ -436,11 +440,16 @@ canvas#FlyingThroughTheSpace.active, canvas#Snow.active, canvas#Clouds.active {
 
 .currency td, .currency th {
   text-align: left;
+  padding-left: 5px;
 }
 
 .currency td:first-child {
   width: 25px;
   text-align: left;
+}
+
+.currency td:first-child, .currency th:first-child {
+  padding-left: 0;
 }
 
 .currency input {
@@ -459,6 +468,17 @@ canvas#FlyingThroughTheSpace.active, canvas#Snow.active, canvas#Clouds.active {
 .currency .sell, .currency .buy {
   text-align: right;
   padding-right: 10px;
+}
+
+.currency .currency-options {
+  cursor: pointer;
+  color: red;
+  position: relative;
+  transition: ease-in-out all 150ms;
+}
+
+.currency .currency-options:hover {
+  transform: scale(1.1);
 }
 
 .aimp {
@@ -870,7 +890,28 @@ canvas#FlyingThroughTheSpace.active, canvas#Snow.active, canvas#Clouds.active {
   width: 20px;
   height: 20px;
   background: red;
-  margin: 0 0 10px 10px;
+  margin: 0 0 0 10px;
+}
+
+.lang-switcher {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  margin: 0 10px 5px 10px;
+}
+
+.lang-switcher .lang {
+  width: 26px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin-right: 5px;
+  border: 2px solid #343434;
+}
+
+.lang-switcher .lang.active {
+  border: 2px solid green;
 }
 
 @media (max-width: 959px) {

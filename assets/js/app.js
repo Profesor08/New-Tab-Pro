@@ -3,15 +3,5 @@
  */
 
 const app = new Vue({
-  el: "#app",
-
-  data: {
-    sites: sitesData,
-    lang: langData.lang
-  },
-
-  created: function ()
-  {
-
-  }
+  el: "#app"
 });

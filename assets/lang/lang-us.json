@@ -1,0 +1,16 @@
+{
+  "snow_button": "Snowfall",
+  "clouds_button": "Clouds",
+  "weather_button": "Weather",
+  "sites_button": "Sites",
+  "voice_search_button": "Voice Search",
+  "space_button": "Flying through space",
+  "currency_button": "Exchange Rates",
+  "currency_volute": "Volute",
+  "currency_rates": "Rates",
+  "options_button": "Options",
+  "add_site_name": "Name",
+  "add_site_url": "Site URL",
+  "add_site_image_url": "Site image URL",
+  "add_site_button": "Add Site"
+}

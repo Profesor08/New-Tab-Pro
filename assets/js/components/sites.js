@@ -7,7 +7,7 @@ Vue.component("add-site-dialog", {
 
   data: function ()
   {
-    return sitesData;
+    return commonData;
   },
 
   methods: {
@@ -55,7 +55,7 @@ Vue.component("sites", {
 
   data: function ()
   {
-    return sitesData;
+    return commonData;
   },
 
   methods: {
@@ -80,7 +80,7 @@ Vue.component("sites", {
         gutterY: 10,
         paddingX: 0,
         paddingY: 0,
-        animateOnInit: true
+        animateOnInit: false
       };
 
       if (this.hasOwnProperty("grid"))
@@ -141,7 +141,7 @@ Vue.component("site-resize", {
 
   data: function ()
   {
-    return sitesData;
+    return commonData;
   },
 
   methods: {},
@@ -176,7 +176,7 @@ Vue.component("sites-button", {
 
   data: function ()
   {
-    return sitesData;
+    return commonData;
   },
 
   methods: {
@@ -203,7 +203,7 @@ Vue.component("options-button", {
 
   data: function ()
   {
-    return sitesData;
+    return commonData;
   },
 
   methods: {
@@ -224,7 +224,7 @@ Vue.component("site-border-color", {
 
   data: function ()
   {
-    return sitesData;
+    return commonData;
   },
 
   mounted: function ()
@@ -257,7 +257,7 @@ Vue.component("site-background-color", {
 
   data: function ()
   {
-    return sitesData;
+    return commonData;
   },
 
   mounted: function ()
@@ -290,7 +290,7 @@ Vue.component("page-background-color", {
 
   data: function ()
   {
-    return sitesData;
+    return commonData;
   },
 
   mounted: function ()

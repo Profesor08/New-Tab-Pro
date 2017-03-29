@@ -5,9 +5,7 @@ Vue.component("options-menu", {
   template: "#options-menu",
   data: function ()
   {
-    return {
-      showMenu: false
-    }
+    return commonData
   },
   created: function ()
   {

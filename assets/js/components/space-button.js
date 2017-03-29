@@ -6,12 +6,7 @@ Vue.component("space-button", {
 
   data: function ()
   {
-    return {
-      active: true,
-      space: null,
-      canvas_id: "FlyingThroughTheSpace",
-      canvas: null
-    }
+    return commonData
   },
 
   methods: {
@@ -19,16 +14,16 @@ Vue.component("space-button", {
     {
       if (show)
       {
-        this.canvas.classList.add("active");
-        this.space.start();
+        this.spaceButton.canvas.classList.add("active");
+        this.spaceButton.space.start();
       }
       else
       {
-        this.canvas.classList.remove("active");
-        this.space.stop();
+        this.spaceButton.canvas.classList.remove("active");
+        this.spaceButton.space.stop();
       }
 
-      this.active = show;
+      this.spaceButton.active = show;
 
       localStorage["showSpace"] = show;
     }
@@ -36,14 +31,14 @@ Vue.component("space-button", {
 
   created: function ()
   {
-    this.canvas = document.createElement("canvas");
-    this.canvas.setAttribute("id", this.canvas_id);
-    document.body.appendChild(this.canvas);
+    this.spaceButton.canvas = document.createElement("canvas");
+    this.spaceButton.canvas.setAttribute("id", this.spaceButton.canvas_id);
+    document.body.appendChild(this.spaceButton.canvas);
 
-    this.space = new FlyingThroughTheSpace("#" + this.canvas_id, {
+    this.spaceButton.space = new FlyingThroughTheSpace("#" + this.spaceButton.canvas_id, {
       speed: 0.025,
       count: 300,
-      background: sitesData.pageBackgroundColor,
+      background: commonData.pageBackgroundColor,
       experimental: true
     });
 

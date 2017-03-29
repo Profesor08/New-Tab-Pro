@@ -2,24 +2,18 @@
  * Created by Profesor08 on 14.12.2016.
  */
 
-var voiceSearchData = {
-  active: true,
-  recording: false,
-  voiceSearch: null
-};
-
 Vue.component("microphone-button", {
   template: "#microphone-button",
 
   data: function ()
   {
-    return voiceSearchData;
+    return commonData;
   },
 
   methods: {
     showMicrophone: function (show)
     {
-      this.active = show;
+      this.voiceSearch.active = show;
       localStorage["showMicrophone"] = show;
     }
   },
@@ -40,22 +34,22 @@ Vue.component("microphone", {
 
   data: function ()
   {
-    return voiceSearchData;
+    return commonData;
   },
 
   methods: {
 
     startRecording: function ()
     {
-      if (!this.recording)
+      if (!this.voiceSearch.recording)
       {
-        this.voiceSearch.start();
+        this.voiceSearch.voiceSearch.start();
       }
       else
       {
-        this.voiceSearch.stop();
+        this.voiceSearch.voiceSearch.stop();
       }
-      this.recording = !this.recording;
+      this.voiceSearch.recording = !this.voiceSearch.recording;
     }
 
   },
@@ -87,19 +81,19 @@ Vue.component("microphone", {
       }
     }
 
-    this.voiceSearch = new speechRecognition();
+    this.voiceSearch.voiceSearch = new speechRecognition();
 
-    this.voiceSearch.addEventListener("result", (event) =>
+    this.voiceSearch.voiceSearch.addEventListener("result", (event) =>
     {
       window.open("http://google.ru/search?q=" + event.results[0][0].transcript, "")
     });
 
-    this.voiceSearch.addEventListener("end", () =>
+    this.voiceSearch.voiceSearch.addEventListener("end", () =>
     {
-      this.recording = false;
+      this.voiceSearch.recording = false;
     });
 
-    this.voiceSearch.addEventListener("error", (event) =>
+    this.voiceSearch.voiceSearch.addEventListener("error", (event) =>
     {
       console.log("%cERROR: " + event.error, "color: #FF0000;");
       console.log(event);

@@ -6,12 +6,7 @@ Vue.component("snow-button", {
 
   data: function ()
   {
-    return {
-      active: true,
-      snow: null,
-      canvas_id: "Snow",
-      canvas: null
-    }
+    return commonData
   },
 
   methods: {
@@ -19,16 +14,16 @@ Vue.component("snow-button", {
     {
       if (show)
       {
-        this.canvas.classList.add("active");
-        this.snow.start();
+        this.snowButton.canvas.classList.add("active");
+        this.snowButton.snow.start();
       }
       else
       {
-        this.canvas.classList.remove("active");
-        this.snow.stop();
+        this.snowButton.canvas.classList.remove("active");
+        this.snowButton.snow.stop();
       }
 
-      this.active = show;
+      this.snowButton.active = show;
 
       localStorage["showSnow"] = show;
     }
@@ -36,11 +31,11 @@ Vue.component("snow-button", {
 
   created: function ()
   {
-    this.canvas = document.createElement("canvas");
-    this.canvas.setAttribute("id", this.canvas_id);
-    document.body.appendChild(this.canvas);
+    this.snowButton.canvas = document.createElement("canvas");
+    this.snowButton.canvas.setAttribute("id", this.snowButton.canvas_id);
+    document.body.appendChild(this.snowButton.canvas);
 
-    this.snow = new Snowfall("#" + this.canvas_id, {
+    this.snowButton.snow = new Snowfall("#" + this.snowButton.canvas_id, {
       images: [
         "assets/images/flakes/flake1.png",
         "assets/images/flakes/flake2.png",

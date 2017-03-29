@@ -1,0 +1,16 @@
+{
+  "snow_button": "Снегопад",
+  "clouds_button": "Облака",
+  "weather_button": "Погода",
+  "sites_button": "Сайты",
+  "voice_search_button": "Голосоой поиск",
+  "space_button": "Сквозь вселенную",
+  "currency_button": "Курс валют",
+  "currency_volute": "Волюта",
+  "currency_rates": "Курс",
+  "options_button": "Настройки",
+  "add_site_name": "Название сайта",
+  "add_site_url": "Ссылка на сайт",
+  "add_site_image_url": "Ссылка на картинку для сайта",
+  "add_site_button": "Добавить сайт"
+}

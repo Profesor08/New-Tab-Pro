@@ -1,5 +1,5 @@
-
-class FlyingThroughTheSpace {
+class FlyingThroughTheSpace
+{
 
   constructor(canvas_id, options)
   {
@@ -36,6 +36,14 @@ class FlyingThroughTheSpace {
         }
       }
     }
+
+    let rgb = this.options.background.replace(/[^\d,]/g, '').split(',');
+
+    this.options.rgb = {
+      r: parseInt(rgb[0]),
+      g: parseInt(rgb[1]),
+      b: parseInt(rgb[2])
+    };
 
     //this.ctx = document.querySelector(canvas_id).getContext("2d");
 
@@ -125,11 +133,44 @@ class FlyingThroughTheSpace {
         this.stars[i].draw();
       }
 
+      this.fixTransparencyArtifacts();
+
       this.mainCtx.drawImage(this.ctx.canvas, 0, 0);
 
       window.requestAnimationFrame(() => this.draw());
     }
   }
+
+  fixTransparencyArtifacts()
+  {
+    // this is kind of magic
+    this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+
+    // let imageData = this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    // let data = imageData.data;
+    //
+    // function fixColor(current, expected, threshold)
+    // {
+    //   if (Math.abs(current - expected) <= threshold)
+    //   {
+    //     return expected;
+    //   }
+    //
+    //   return current;
+    // }
+    //
+    // for (let i = 0; i < data.length; i += 4)
+    // {
+    //   data[i] = fixColor(data[i], this.options.rgb.r, 5);
+    //   data[i + 1] = fixColor(data[i + 1], this.options.rgb.g, 5);
+    //   data[i + 2] = fixColor(data[i + 2], this.options.rgb.b, 5);
+    // }
+    //
+    // this.ctx.putImageData(imageData, 0, 0);
+  }
+
+
 
 }
 

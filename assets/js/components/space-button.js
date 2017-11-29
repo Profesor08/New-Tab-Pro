@@ -39,7 +39,7 @@ Vue.component("space-button", {
       speed: 0.025,
       count: 300,
       background: commonData.pageBackgroundColor,
-      experimental: true
+      experimental: false
     });
 
     if ("showSpace" in localStorage)

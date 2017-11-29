@@ -54,13 +54,21 @@ Vue.component("weather-button", {
       this.$http.get('http://api.sypexgeo.net/json/').then((res) =>
       {
         let sypexgeo = res.data;
-        let url = "http://api.worldweatheronline.com/free/v2/weather.ashx?" + this.encodeUrlQuery({
-            key: "e4ecf6c6f71586644ce2516ae3f58",
-            q: sypexgeo.country.capital_en,
-            num_of_days: "1",
-            format: "json",
-            lang: lang
+        // let url = "http://api.worldweatheronline.com/free/v2/weather.ashx?" + this.encodeUrlQuery({
+        //     key: "6564657a438b48a2a1e104000170907",
+        //     q: sypexgeo.country.capital_en,
+        //     num_of_days: "1",
+        //     format: "json",
+        //     lang: lang
+        //   });
+
+        let url = "http://api.openweathermap.org/data/2.5/weather?"
+          + this.encodeUrlQuery({
+            id: sypexgeo.country.capital_id,
+            appid: "6a3811c0c201a60032a60c243e832cf1",
+            units: "Metric"
           });
+
 
         this.$http.get(url).then((res) =>
         {
@@ -82,16 +90,19 @@ Vue.component("weather-button", {
             this.weatherData.city = sypexgeo.country["capital_en"];
           }
 
-          if (res.data.data.current_condition[0].hasOwnProperty("lang_" + lang))
-          {
-            this.weatherData.condition = res.data.data.current_condition[0]["lang_" + lang][0].value;
-          }
-          else
-          {
-            this.weatherData.condition = res.data.data.current_condition[0].weatherDesc[0].value;
-          }
+          this.weatherData.condition = res.data.weather[0].main;
+          this.weatherData.temperature = res.data.main.temp;
 
-          this.weatherData.temperature = res.data.data.current_condition[0].temp_C;
+          // if (res.data.data.current_condition[0].hasOwnProperty("lang_" + lang))
+          // {
+          //   this.weatherData.condition = res.data.data.current_condition[0]["lang_" + lang][0].value;
+          // }
+          // else
+          // {
+          //   this.weatherData.condition = res.data.data.current_condition[0].weatherDesc[0].value;
+          // }
+          //
+          // this.weatherData.temperature = res.data.data.current_condition[0].temp_C;
           this.weatherData.show = true;
         }, (res) => console.log(res));
       }, (res) => console.log(res));

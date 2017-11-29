@@ -23,4 +23,4 @@ Upcoming features:
 - Elements placement
 
 **Preview:**
-![Screenshot](http://image.prntscr.com/image/4a6c5fedeed74b54bffff5ffaf95f042.png)
+![Screenshot](http://image.prntscr.com/image/20f197fab0434dc0bd75118cfa504444.png)

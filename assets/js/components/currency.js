@@ -106,7 +106,14 @@ Vue.component("currency-button", {
     },
 
     cacheExpired: function () {
-      return Date.now() - parseInt(localStorage.getItem("currencyCacheTime")) > 3600000;
+      let cacheTime = localStorage.getItem("currencyCacheTime");
+
+      if (cacheTime === null)
+      {
+        return true;
+      }
+
+      return Date.now() - parseInt(cacheTime) > 3600000;
     },
 
     buildQuery: function (volutes, base) {

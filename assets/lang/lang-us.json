@@ -12,5 +12,6 @@
   "add_site_name": "Name",
   "add_site_url": "Site URL",
   "add_site_image_url": "Site image URL",
-  "add_site_button": "Add Site"
+  "add_site_button": "Add Site",
+  "bookmarks_button": "Bookmarks"
 }

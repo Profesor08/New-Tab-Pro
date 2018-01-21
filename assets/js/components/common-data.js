@@ -54,6 +54,8 @@ const commonData = {
     canvas_id: "FlyingThroughTheSpace",
     canvas: null
   },
+  bookmarks: [],
+  bookmarksSearchQuery: "",
   cloudsButton: {
     active: true,
     clouds: null,

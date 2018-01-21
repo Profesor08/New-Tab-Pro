@@ -19,6 +19,7 @@
   <script type="text/javascript" src="assets/js/external/spectrum/spectrum.js"></script>
   <script type="text/javascript" src="assets/js/external/tinycolor.js"></script>
   <script type="text/javascript" src="assets/js/external/js-cookie.js"></script>
+  <script type="text/javascript" src="assets/js/external/greensock-js/src/minified/TweenMax.min.js"></script>
   
   <script type="text/javascript" src="assets/js/lib/Star.js"></script>
   <script type="text/javascript" src="assets/js/lib/FlyingThroughTheSpace.js"></script>
@@ -26,28 +27,62 @@
   <script type="text/javascript" src="assets/js/lib/Snowfall.js"></script>
   <script type="text/javascript" src="assets/js/lib/Cloud.js"></script>
   <script type="text/javascript" src="assets/js/lib/Clouds.js"></script>
+  <script type="text/javascript" src="assets/js/lib/Bookmarks.js"></script>
+  
   
   <template id="snow-button">
-    <button v-on:click="showSnow(!snowButton.active)" v-bind:class="{ active : snowButton.active}">{{ lang.snow_button
-      }}
+    <button v-on:click="showSnow(!snowButton.active)" v-bind:class="{ active : snowButton.active}">
+      {{ lang.snow_button }}
     </button>
   </template>
   
   <template id="space-button">
-    <button v-on:click="showSpace(!spaceButton.active)" v-bind:class="{ active : spaceButton.active}">{{
-      lang.space_button }}
+    <button v-on:click="showSpace(!spaceButton.active)" v-bind:class="{ active : spaceButton.active}">
+      {{ lang.space_button }}
     </button>
   </template>
   
+  <template id="bookmarks-button">
+    <button class="bookmarks-button d-flex justify-content-center align-items-center" v-on:click="showBookmarksPanel()">
+      <i class="fa fa-star"></i>
+    </button>
+  </template>
+  
+  <template id="bookmarks-panel">
+    <div class="bookmarks-panel d-flex">
+      <div class="bookmarks-body d-flex flex-column">
+        <div class="panel-header d-flex align-items-center">
+          <div class="search-container">
+            <input type="text" placeholder="Search" v-model="bookmarksSearchQuery">
+          </div>
+          <div class="close-button" v-on:click="hidePanel">
+            <i class="fa fa-remove"></i>
+          </div>
+        </div>
+        <div class="bookmarks-container">
+          <div class="bookmark d-flex align-items-center" v-for="bookmark in bookmarks">
+            <div class="bookmark-icon">
+              <img :src="getFavicon(bookmark)">
+            </div>
+            <div class="bookmark-link-container"><a class="bookmark-link" :href="bookmark.url">{{ bookmark.title }}</a></div>
+            <div class="bookmark-date-time">
+              {{ dateFormat(bookmark.dateAdded) }}, {{ timeFormat(bookmark.dateAdded) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  
   <template id="clouds-button">
-    <button v-on:click="showClouds(!cloudsButton.active)" v-bind:class="{ active : cloudsButton.active}">{{
-      lang.clouds_button }}
+    <button v-on:click="showClouds(!cloudsButton.active)" v-bind:class="{ active : cloudsButton.active}">
+      {{ lang.clouds_button }}
     </button>
   </template>
   
   <template id="weather-button">
-    <button v-on:click="showWeather(!weatherData.active)" v-bind:class="{ active : weatherData.active}">{{
-      lang.weather_button }}
+    <button v-on:click="showWeather(!weatherData.active)" v-bind:class="{ active : weatherData.active}">
+      {{ lang.weather_button }}
     </button>
   </template>
   
@@ -56,20 +91,20 @@
   </template>
   
   <template id="microphone-button">
-    <button v-on:click="showMicrophone(!voiceSearch.active)" v-bind:class="{ active : voiceSearch.active}">{{
-      lang.voice_search_button }}
+    <button v-on:click="showMicrophone(!voiceSearch.active)" v-bind:class="{ active : voiceSearch.active}">
+      {{ lang.voice_search_button }}
     </button>
   </template>
   
   <template id="currency-button">
-    <button v-on:click="showCurrency(!currencyData.active)" v-bind:class="{ active : currencyData.active}">{{
-      lang.currency_button }}
+    <button v-on:click="showCurrency(!currencyData.active)" v-bind:class="{ active : currencyData.active}">
+      {{ lang.currency_button }}
     </button>
   </template>
   
   <template id="options-button">
-    <button v-on:click="showOptions(!options.active)" v-bind:class="{ active : options.active}">{{ lang.options_button
-      }}
+    <button v-on:click="showOptions(!options.active)" v-bind:class="{ active : options.active}">
+      {{ lang.options_button }}
     </button>
   </template>
   
@@ -253,8 +288,8 @@
               </option>
             </select>
           </div>
-  
-  
+          
+          
           <div class="form-group">
             <div><label>lang.currency_add_volute</label></div>
             <div class="input-group">
@@ -269,11 +304,12 @@
               <div class="input-group-btn">
                 <button
                     v-on:click="addVolute()"
-                    class="btn btn-default btn-success">lang.currency_add</button>
+                    class="btn btn-default btn-success">lang.currency_add
+                </button>
               </div>
             </div>
           </div>
-  
+          
           <div class="form-group">
             <div><label>lang.currency_selected_volutes</label></div>
             <button
@@ -283,7 +319,7 @@
               {{ volute }} <i @click="deleteVolute(volute)" class="fa fa-remove"></i>
             </button>
           </div>
-          
+        
         </div>
       </div>
     
@@ -330,6 +366,10 @@
   
   <options-menu></options-menu>
   
+  <bookmarks-button></bookmarks-button>
+  
+  <bookmarks-panel></bookmarks-panel>
+  
   <sites></sites>
   
   <weather></weather>
@@ -345,6 +385,7 @@
 
 </div>
 
+<script type="text/javascript" src="assets/js/components/config.js" defer></script>
 <script type="text/javascript" src="assets/js/components/common-data.js" defer></script>
 <script type="text/javascript" src="assets/js/components/options-menu.js" defer></script>
 <script type="text/javascript" src="assets/js/components/lang.js" defer></script>
@@ -356,6 +397,7 @@
 <script type="text/javascript" src="assets/js/components/voice-search.js" defer></script>
 <script type="text/javascript" src="assets/js/components/sites.js" defer></script>
 <script type="text/javascript" src="assets/js/components/aimp.js" defer></script>
+<script type="text/javascript" src="assets/js/components/bookmarks.js" defer></script>
 <script type="text/javascript" src="assets/js/app.js" defer></script>
 </body>
 </html>

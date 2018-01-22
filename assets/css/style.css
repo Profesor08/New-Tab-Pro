@@ -1,3 +1,7 @@
+@import "scrollbar.css";
+@import "grid.css";
+@import "bookmarks.css";
+
 @font-face {
   font-family: roboto-light;
   src: url(../fonts/Roboto/Roboto-Light.ttf);
@@ -914,140 +918,6 @@ canvas#FlyingThroughTheSpace.active, canvas#Snow.active, canvas#Clouds.active {
   border: 2px solid green;
 }
 
-.d-flex {
-  display: flex;
-}
-
-.flex-column {
-  flex-direction: column;
-}
-
-.justify-content-center {
-  justify-content: center;
-}
-
-.justify-content-between {
-  justify-content: space-between;
-}
-
-.align-items-center {
-  align-items: center;
-}
-
-.bookmarks-button {
-  position: absolute;
-  z-index: 29;
-  top: 40px;
-  left: 4px;
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255, 51, 0, 0.2);
-  border-radius: 50%;
-  background: #343434;
-  color: white;
-  font-size: 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: all ease-in-out .15s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  outline: none;
-}
-
-.bookmarks-button:hover {
-  color: yellow;
-}
-
-.bookmarks-panel {
-  position: absolute;
-  z-index: 100;
-  height: calc(100vh - 10px - 10px);
-  width: 1000px;
-  max-width: calc(100% - 28px - 28px);
-  transform: translate(-50%, 0);
-  /*left: 50%;*/
-  left: -9999px;
-  opacity: 0;
-  top: 10px;
-  background: white;
-  color: black;
-  padding: 20px;
-}
-
-.bookmarks-panel .close-button {
-  font-size: 30px;
-  transition: ease color 250ms;
-}
-
-.bookmarks-panel .close-button:hover {
-  color: red;
-  cursor: pointer;
-}
-
-.bookmarks-panel .bookmarks-body {
-  flex: 1 0 0;
-}
-
-.bookmarks-panel .bookmarks-container {
-  flex: 1 0 0;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  margin-top: 20px;
-}
-
-.bookmarks-panel .search-container {
-  flex: 1 0 0;
-}
-
-.bookmarks-panel .search-container input {
-  width: 70%;
-  border: 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  outline: none;
-  padding: 10px;
-}
-
-.bookmarks-panel .bookmark {
-  width: 100%;
-  height: 40px;
-  padding: 0 20px;
-  flex-wrap: nowrap;
-}
-
-.bookmarks-panel .bookmark:hover {
-  background: #E0EBFD;
-}
-
-.bookmarks-panel .bookmark-link-container {
-  flex-grow: 1;
-  flex-shrink: 1;
-  position: relative;
-  height: 20px;
-}
-
-.bookmarks-panel .bookmark-link {
-  position: absolute;
-  max-width: 100%;
-  width: auto;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.bookmarks-panel .bookmark-date-time {
-  white-space: nowrap;
-  width: 120px;
-  flex-shrink: 0;
-  font-size: 80%;
-  font-weight: bolder;
-  text-align: center;
-}
-
-.bookmarks-panel .bookmark-icon {
-  margin-right: 10px;
-}
-
 @media (max-width: 959px) {
   .aimp-wrapper {
     width: 840px;
@@ -1082,30 +952,4 @@ canvas#FlyingThroughTheSpace.active, canvas#Snow.active, canvas#Clouds.active {
     left: calc(50% + 90px);
     transform: translateX(-50%);
   }
-}
-
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-button {
-  width: 0;
-  height: 0;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-::-webkit-scrollbar-track-piece { /* 4 */
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-::-webkit-scrollbar-corner { /* 6 */
-}
-
-::-webkit-resizer { /* 7 */
 }

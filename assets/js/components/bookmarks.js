@@ -36,7 +36,7 @@ Vue.component("bookmarks-button", {
         {
           prop: "name",
           order: "asc"
-        },
+        }
       ]);
     });
 
@@ -84,29 +84,224 @@ Vue.component("bookmarks-panel", {
 
     getFavicon: function (bookmark) {
       return "chrome://favicon/size/24@1x/" + bookmark.url;
+    },
+
+    toggleFilterMenu: function () {
+      if (this.isFilteMenuOpen === false)
+      {
+        this.openFilterMenu();
+      }
+      else
+      {
+        this.closeFilterMenu();
+      }
+    },
+
+    openFilterMenu: function () {
+      let tl = new TimelineMax();
+
+      tl
+        .to(this.filterMenu, 0, {
+          left: "50%"
+        })
+        .to(this.filterMenu, .3, {
+          opacity: 1
+        });
+
+      this.isFilteMenuOpen = true;
+    },
+
+    closeFilterMenu: function () {
+      let tl = new TimelineMax();
+
+      tl
+        .to(this.filterMenu, .3, {
+          opacity: 0
+        })
+        .to(this.filterMenu, 0, {
+          left: -9999
+        });
+
+      this.isFilteMenuOpen = false;
+    },
+
+    startCloseTimeout: function () {
+      this.closeTimeout = setTimeout(() => {
+        this.closeFilterMenu();
+      }, 2000);
+    },
+
+    stopCloseTimeout: function () {
+      clearTimeout(this.closeTimeout);
+    },
+
+    filterBookmarks: function (query) {
+      let bookmarks = new Bookmarks();
+
+      bookmarks.search(query).then(result => {
+        this.bookmarks = bookmarks.order(result, this.bookmarksFilter);
+      });
+    },
+
+    getFilterRule: function (name) {
+      if (this.bookmarksFilter[0].prop === name)
+      {
+        return Object.assign({}, this.bookmarksFilter[0]);
+      }
+      else
+      {
+        return Object.assign({}, this.bookmarksFilter[1]);
+      }
+    },
+
+    filterBy: function (order) {
+
+      switch (order)
+      {
+        case "date-desc":
+        {
+          let secondRule = this.getFilterRule("name");
+
+          this.bookmarksFilter = [
+            {
+              prop: "date",
+              order: "desc"
+            }
+          ];
+
+          this.bookmarksFilter.push(secondRule);
+
+          break;
+        }
+        case "date-asc":
+        {
+          let secondRule = this.getFilterRule("name");
+
+          this.bookmarksFilter = [
+            {
+              prop: "date",
+              order: "asc"
+            }
+          ];
+
+          this.bookmarksFilter.push(secondRule);
+
+          break;
+        }
+        case "name-desc":
+        {
+          let secondRule = this.getFilterRule("date");
+
+          this.bookmarksFilter = [
+            {
+              prop: "name",
+              order: "desc"
+            }
+          ];
+
+          this.bookmarksFilter.push(secondRule);
+
+          break;
+        }
+        case "name-asc":
+        {
+          let secondRule = this.getFilterRule("date");
+
+          this.bookmarksFilter = [
+            {
+              prop: "name",
+              order: "asc"
+            }
+          ];
+
+          this.bookmarksFilter.push(secondRule);
+
+          break;
+        }
+      }
+
+      this.filterBookmarks(this.bookmarksSearchQuery);
+      this.saveFilterOrder();
+      this.closeFilterMenu();
+    },
+
+    filterSelected: function (order) {
+      return order === `${this.bookmarksFilter[0].prop}-${this.bookmarksFilter[0].order}`;
+    },
+
+    saveFilterOrder: function () {
+      localStorage["bookmarksFilter"] = JSON.stringify(this.bookmarksFilter);
+    },
+
+    loadFilterOrder: function () {
+      if (localStorage.hasOwnProperty("bookmarksFilter"))
+      {
+        this.bookmarksFilter = JSON.parse(localStorage["bookmarksFilter"]);
+      }
+      else
+      {
+        this.bookmarksFilter = [
+          {
+            prop: "date",
+            order: "desc"
+          },
+          {
+            prop: "name",
+            order: "asc"
+          }
+        ];
+      }
     }
   },
 
   watch: {
     bookmarksSearchQuery: function (query) {
-      let bookmarks = new Bookmarks();
-
-      bookmarks.search(query).then(result => {
-        this.bookmarks = bookmarks.order(result, [
-          {
-            prop: "name",
-            order: "desc"
-          },
-          {
-            prop: "date",
-            order: "asc"
-          },
-        ]);
-      });
+      this.filterBookmarks(query);
     }
   },
 
+  mounted: function () {
+    this.filterMenu = document.querySelector(".bookmarks-panel .filter .filter-list");
+    this.filterContainer = document.querySelector(".bookmarks-panel .filter");
+  },
+
   created: function () {
+    this.isFilteMenuOpen = false;
+    this.closeTimeout = null;
+    this.loadFilterOrder();
+    this.filterBookmarks(this.bookmarksSearchQuery);
+
+    chrome.bookmarks.onCreated.addListener(() => {
+      this.filterBookmarks(this.bookmarksSearchQuery);
+    });
+
+    chrome.bookmarks.onRemoved.addListener(() => {
+      this.filterBookmarks(this.bookmarksSearchQuery);
+    });
+
+    let filter = document.querySelector(".bookmarks-panel .filter");
+
+    document.body.addEventListener("click", (event) => {
+      let isClickOnFilter = element => {
+        if (element !== null && element !== undefined)
+        {
+          if (element.isSameNode(this.filterContainer)) {
+            return true;
+          }
+          else {
+            return isClickOnFilter(element.parentNode);
+          }
+        }
+
+        return false;
+      };
+
+      if (!isClickOnFilter(event.target))
+      {
+        this.closeFilterMenu();
+      }
+    });
+
     console.log("Bookmarks panel component loaded.");
   }
 });

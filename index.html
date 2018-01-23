@@ -21,6 +21,7 @@
   <script type="text/javascript" src="assets/js/external/js-cookie.js"></script>
   <script type="text/javascript" src="assets/js/external/greensock-js/src/minified/TweenMax.min.js"></script>
   
+  <script type="text/javascript" src="assets/js/lib/Utils.js"></script>
   <script type="text/javascript" src="assets/js/lib/Star.js"></script>
   <script type="text/javascript" src="assets/js/lib/FlyingThroughTheSpace.js"></script>
   <script type="text/javascript" src="assets/js/lib/Flake.js"></script>
@@ -57,19 +58,20 @@
               <input type="text" v-bind:placeholder="lang.search" v-model="bookmarksSearchQuery">
               <div class="clear-input" v-show="bookmarksSearchQuery.length > 0" v-on:click="bookmarksSearchQuery=''"></div>
             </label>
-            <div class="filter" v-on:mouseenter="stopCloseTimeout" v-on:mouseleave="startCloseTimeout">
+            <div class="filter">
               <div class="filter-icon d-flex align-items-end" v-on:click="toggleFilterMenu">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                   <path d="M6 3l-6 8h4v10h4v-10h4l-6-8zm16 14h-8v-2h8v2zm2 2h-10v2h10v-2zm-4-8h-6v2h6v-2zm-2-4h-4v2h4v-2zm-2-4h-2v2h2v-2z"></path>
                 </svg>
               </div>
-              <div class="filter-list">
-                <div class="filter-order" v-bind:class="{selected: filterSelected('date-desc')}" v-on:click="filterBy('date-desc')">↑ {{ lang.search_by_date }}</div>
-                <div class="filter-order" v-bind:class="{selected: filterSelected('date-asc')}" v-on:click="filterBy('date-asc')">↓ {{ lang.search_by_date }}</div>
-                <div class="filter-order" v-bind:class="{selected: filterSelected('name-desc')}" v-on:click="filterBy('name-desc')">↑ {{ lang.search_by_name }}</div>
-                <div class="filter-order" v-bind:class="{selected: filterSelected('name-asc')}" v-on:click="filterBy('name-asc')">↓ {{ lang.search_by_name }}</div>
-                <div class="filter-order" v-on:click="closeFilterMenu">&nbsp;&nbsp;&nbsp;{{ lang.close }}</div>
-              </div>
+              <menu-dialog class="filter-list">
+                <button v-bind:class="{selected: filterSelected('date-desc')}" v-on:click="filterBy('date-desc')">↑ {{ lang.search_by_date }}</button>
+                <button v-bind:class="{selected: filterSelected('date-asc')}" v-on:click="filterBy('date-asc')">↓ {{ lang.search_by_date }}</button>
+                <button v-bind:class="{selected: filterSelected('name-desc')}" v-on:click="filterBy('name-desc')">↑ {{ lang.search_by_name }}</button>
+                <button v-bind:class="{selected: filterSelected('name-asc')}" v-on:click="filterBy('name-asc')">↓ {{ lang.search_by_name }}</button>
+                <hr aria-hidden="true">
+                <button v-on:click="closeFilterMenu">&nbsp;&nbsp;&nbsp;{{ lang.close }}</button>
+              </menu-dialog>
             </div>
           </div>
           <div class="close-button" v-on:click="hidePanel"></div>
@@ -84,8 +86,8 @@
             <div class="bookmark-date-time">
               {{ dateFormat(bookmark.dateAdded) }}, {{ timeFormat(bookmark.dateAdded) }}
             </div>
-            <div class="bookmark-menu">
-              <div class="bookmark-menu-icon">
+            <div class="bookmark-menu-button">
+              <div class="bookmark-menu-button-icon d-flex flex-column align-items-center justify-content-center" v-on:click="showBookmarkMenu(bookmark, $event)">
                 <div></div>
                 <div></div>
                 <div></div>
@@ -94,6 +96,17 @@
           </div>
         </div>
       </div>
+      <menu-dialog class="bookmark-menu">
+        <button>{{ lang.change }}</button>
+        <button v-on:click="copyBookmarkUrl">{{ lang.copy_url }}</button>
+        <button>{{ lang.delete }}</button>
+        <hr aria-hidden="true">
+        <button>{{ lang.open_in_new_tab }}</button>
+        <button>{{ lang.open_in_new_window }}</button>
+        <button>{{ lang.open_in_incognito }}</button>
+        <hr aria-hidden="true">
+        <button v-on:click="closeBookmarkMenu">{{ lang.close }}</button>
+      </menu-dialog>
     </div>
   </template>
   

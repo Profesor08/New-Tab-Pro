@@ -125,16 +125,6 @@ Vue.component("bookmarks-panel", {
       this.isFilteMenuOpen = false;
     },
 
-    startCloseTimeout: function () {
-      this.closeTimeout = setTimeout(() => {
-        this.closeFilterMenu();
-      }, 2000);
-    },
-
-    stopCloseTimeout: function () {
-      clearTimeout(this.closeTimeout);
-    },
-
     filterBookmarks: function (query) {
       let bookmarks = new Bookmarks();
 
@@ -251,6 +241,51 @@ Vue.component("bookmarks-panel", {
           }
         ];
       }
+    },
+
+    showBookmarkMenu: function (bookmark, event) {
+
+      this.selectedBookmark = bookmark;
+      this.activeBookmarkMenuButton = event.target;
+
+      let x = event.x - event.offsetX - (window.innerWidth - this.bookmarkPanel.offsetWidth) / 2;
+      let y = event.y - event.offsetY;
+
+      if (y + this.bookmarkMenu.offsetHeight + 32 > window.innerHeight)
+      {
+        y = window.innerHeight - this.bookmarkMenu.offsetHeight - 32;
+      }
+
+      new TimelineMax()
+        .to(this.bookmarkMenu, 0, {
+          left: x,
+          top: y
+        })
+        .fromTo(this.bookmarkMenu, .3, {
+          opacity: 0
+        }, {
+          opacity: 1
+        });
+
+      clearTimeout(this.autoCloseBookmarkMenu);
+
+      this.autoCloseBookmarkMenu = setTimeout(() => {
+        this.closeBookmarkMenu();
+      }, 3300);
+    },
+
+    closeBookmarkMenu: function () {
+      new TimelineMax()
+        .to(this.bookmarkMenu, .3, {
+          opacity: 0
+        })
+        .to(this.bookmarkMenu, 0, {
+          left: -9999
+        });
+    },
+
+    copyBookmarkUrl: function () {
+      Utils.copyToClipboard(this.selectedBookmark.url);
     }
   },
 
@@ -263,11 +298,38 @@ Vue.component("bookmarks-panel", {
   mounted: function () {
     this.filterMenu = document.querySelector(".bookmarks-panel .filter .filter-list");
     this.filterContainer = document.querySelector(".bookmarks-panel .filter");
+    this.bookmarkMenu = document.querySelector(".bookmarks-panel .bookmark-menu");
+    this.bookmarkPanel = document.querySelector(".bookmarks-panel");
+
+    Utils.clickOutOfElement(this.filterContainer, () => {
+      this.closeFilterMenu();
+    });
+
+    Utils.mouseleaveTimeout(this.filterContainer, 2000, () => {
+      this.closeFilterMenu();
+    });
+
+    Utils.clickOutOfElement(this.bookmarkMenu, (event) => {
+      if (!event.target.isSameNode(this.activeBookmarkMenuButton))
+      {
+        this.closeBookmarkMenu();
+      }
+    });
+
+    Utils.mouseleaveTimeout(this.bookmarkMenu, 2000, () => {
+      this.closeBookmarkMenu();
+    });
+
+    this.bookmarkMenu.addEventListener("mouseenter", () => {
+      clearTimeout(this.autoCloseBookmarkMenu);
+    })
   },
 
   created: function () {
     this.isFilteMenuOpen = false;
-    this.closeTimeout = null;
+    this.selectedBookmark = null;
+    this.activeBookmarkMenuButton = null;
+    this.autoCloseBookmarkMenu = 0;
     this.loadFilterOrder();
     this.filterBookmarks(this.bookmarksSearchQuery);
 
@@ -277,29 +339,6 @@ Vue.component("bookmarks-panel", {
 
     chrome.bookmarks.onRemoved.addListener(() => {
       this.filterBookmarks(this.bookmarksSearchQuery);
-    });
-
-    let filter = document.querySelector(".bookmarks-panel .filter");
-
-    document.body.addEventListener("click", (event) => {
-      let isClickOnFilter = element => {
-        if (element !== null && element !== undefined)
-        {
-          if (element.isSameNode(this.filterContainer)) {
-            return true;
-          }
-          else {
-            return isClickOnFilter(element.parentNode);
-          }
-        }
-
-        return false;
-      };
-
-      if (!isClickOnFilter(event.target))
-      {
-        this.closeFilterMenu();
-      }
     });
 
     console.log("Bookmarks panel component loaded.");

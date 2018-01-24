@@ -30,9 +30,9 @@
   width: 1000px;
   max-width: calc(100% - 28px - 28px);
   transform: translate(-50%, 0);
-  /*left: 50%;*/
-  left: -9999px;
-  opacity: 0;
+  left: 50%;
+  /*left: -9999px;*/
+  /*opacity: 0;*/
   top: 10px;
   background: white;
   color: black;

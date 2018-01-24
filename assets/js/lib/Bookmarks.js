@@ -84,21 +84,11 @@ class Bookmarks
     }
 
     return data.sort(function (a, b) {
-      for (let i = 0; i < options.length; i++)
-      {
-        let sortResult = sort(
-          a[getSortProperty(options[i].prop)],
-          b[getSortProperty(options[i].prop)],
-          options[i].order
-        );
-
-        if (sortResult !== 0)
-        {
-          return sortResult;
-        }
-      }
-
-      return 0;
+      return sort(
+        a[getSortProperty(options.by)],
+        b[getSortProperty(options.by)],
+        options.order
+      );
     });
   }
 

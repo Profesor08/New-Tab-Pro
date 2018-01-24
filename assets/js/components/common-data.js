@@ -56,16 +56,10 @@ const commonData = {
   },
   bookmarks: [],
   bookmarksSearchQuery: "",
-  bookmarksFilter: [
-    {
-      prop: "date",
-      order: "desc"
-    },
-    {
-      prop: "name",
-      order: "asc"
-    }
-  ],
+  bookmarksFilter: {
+    by: "date",
+    order: "desc"
+  },
   cloudsButton: {
     active: true,
     clouds: null,

@@ -65,10 +65,10 @@
                 </svg>
               </div>
               <menu-dialog class="filter-list">
-                <button v-bind:class="{selected: filterSelected('date-desc')}" v-on:click="filterBy('date-desc')">↑ {{ lang.search_by_date }}</button>
-                <button v-bind:class="{selected: filterSelected('date-asc')}" v-on:click="filterBy('date-asc')">↓ {{ lang.search_by_date }}</button>
-                <button v-bind:class="{selected: filterSelected('name-desc')}" v-on:click="filterBy('name-desc')">↑ {{ lang.search_by_name }}</button>
-                <button v-bind:class="{selected: filterSelected('name-asc')}" v-on:click="filterBy('name-asc')">↓ {{ lang.search_by_name }}</button>
+                <button v-bind:class="{selected: filterSelected('date-desc')}" v-on:click="filterBy('date', 'desc')">↑ {{ lang.search_by_date }}</button>
+                <button v-bind:class="{selected: filterSelected('date-asc')}" v-on:click="filterBy('date', 'asc')">↓ {{ lang.search_by_date }}</button>
+                <button v-bind:class="{selected: filterSelected('name-desc')}" v-on:click="filterBy('name', 'desc')">↑ {{ lang.search_by_name }}</button>
+                <button v-bind:class="{selected: filterSelected('name-asc')}" v-on:click="filterBy('name', 'asc')">↓ {{ lang.search_by_name }}</button>
                 <hr aria-hidden="true">
                 <button v-on:click="closeFilterMenu">&nbsp;&nbsp;&nbsp;{{ lang.close }}</button>
               </menu-dialog>

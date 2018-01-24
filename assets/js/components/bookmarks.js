@@ -24,22 +24,6 @@ Vue.component("bookmarks-button", {
   },
 
   created: function () {
-
-    let bookmarks = new Bookmarks();
-
-    bookmarks.get().then(result => {
-      this.bookmarks = bookmarks.order(result, [
-        {
-          prop: "date",
-          order: "desc"
-        },
-        {
-          prop: "name",
-          order: "asc"
-        }
-      ]);
-    });
-
     console.log("Bookmarks button component loaded.");
   }
 });
@@ -133,82 +117,12 @@ Vue.component("bookmarks-panel", {
       });
     },
 
-    getFilterRule: function (name) {
-      if (this.bookmarksFilter[0].prop === name)
-      {
-        return Object.assign({}, this.bookmarksFilter[0]);
-      }
-      else
-      {
-        return Object.assign({}, this.bookmarksFilter[1]);
-      }
-    },
+    filterBy: function (by, order) {
 
-    filterBy: function (order) {
-
-      switch (order)
-      {
-        case "date-desc":
-        {
-          let secondRule = this.getFilterRule("name");
-
-          this.bookmarksFilter = [
-            {
-              prop: "date",
-              order: "desc"
-            }
-          ];
-
-          this.bookmarksFilter.push(secondRule);
-
-          break;
-        }
-        case "date-asc":
-        {
-          let secondRule = this.getFilterRule("name");
-
-          this.bookmarksFilter = [
-            {
-              prop: "date",
-              order: "asc"
-            }
-          ];
-
-          this.bookmarksFilter.push(secondRule);
-
-          break;
-        }
-        case "name-desc":
-        {
-          let secondRule = this.getFilterRule("date");
-
-          this.bookmarksFilter = [
-            {
-              prop: "name",
-              order: "desc"
-            }
-          ];
-
-          this.bookmarksFilter.push(secondRule);
-
-          break;
-        }
-        case "name-asc":
-        {
-          let secondRule = this.getFilterRule("date");
-
-          this.bookmarksFilter = [
-            {
-              prop: "name",
-              order: "asc"
-            }
-          ];
-
-          this.bookmarksFilter.push(secondRule);
-
-          break;
-        }
-      }
+      this.bookmarksFilter = {
+        by: by,
+        order: order
+      };
 
       this.filterBookmarks(this.bookmarksSearchQuery);
       this.saveFilterOrder();
@@ -216,7 +130,7 @@ Vue.component("bookmarks-panel", {
     },
 
     filterSelected: function (order) {
-      return order === `${this.bookmarksFilter[0].prop}-${this.bookmarksFilter[0].order}`;
+      return order === `${this.bookmarksFilter.by}-${this.bookmarksFilter.order}`;
     },
 
     saveFilterOrder: function () {
@@ -227,19 +141,6 @@ Vue.component("bookmarks-panel", {
       if (localStorage.hasOwnProperty("bookmarksFilter"))
       {
         this.bookmarksFilter = JSON.parse(localStorage["bookmarksFilter"]);
-      }
-      else
-      {
-        this.bookmarksFilter = [
-          {
-            prop: "date",
-            order: "desc"
-          },
-          {
-            prop: "name",
-            order: "asc"
-          }
-        ];
       }
     },
 

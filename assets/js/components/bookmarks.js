@@ -185,8 +185,82 @@ Vue.component("bookmarks-panel", {
         });
     },
 
+    getRemovedBookmarks: function () {
+      if (localStorage.hasOwnProperty("removedBookmarks"))
+      {
+        return JSON.parse(localStorage["removedBookmarks"]);
+      }
+
+      return [];
+    },
+
+    saveRemovedBookmarks: function (bookmarks) {
+      localStorage["removedBookmarks"] = JSON.stringify(bookmarks);
+    },
+
+    addBookmarkToRemovedList: function (bookmark) {
+      let removed = this.getRemovedBookmarks();
+
+      removed.push({
+        dateAdded: bookmark.dateAdded,
+        id: bookmark.id,
+        index: bookmark.index,
+        parentId: bookmark.parentId,
+        title: bookmark.title,
+        url: bookmark.url
+      });
+
+      this.saveRemovedBookmarks(removed);
+    },
+
     copyBookmarkUrl: function () {
       Utils.copyToClipboard(this.selectedBookmark.url);
+      this.closeBookmarkMenu();
+    },
+
+    deleteBookmark: function () {
+      let index = this.bookmarks.indexOf(this.selectedBookmark);
+
+      if (index !== -1)
+      {
+        chrome.bookmarks.remove(this.selectedBookmark.id, () => {
+          this.addBookmarkToRemovedList(this.selectedBookmark);
+          this.closeBookmarkMenu();
+        })
+      }
+    },
+
+    openInNewTab: function () {
+      chrome.tabs.create({url: this.selectedBookmark.url});
+    },
+
+    openInNewWindow: function () {
+      chrome.windows.create({url: this.selectedBookmark.url});
+    },
+
+    openInIncognito: function () {
+      chrome.windows.create({
+        url: this.selectedBookmark.url,
+        "incognito": true
+      });
+    },
+
+    restorePreviouslyDeletedBookmark: function () {
+      let bookmarks = this.getRemovedBookmarks();
+
+      if (bookmarks.length > 0)
+      {
+        let bookmark = {
+          title: bookmarks[bookmarks.length - 1].title,
+          url: bookmarks[bookmarks.length - 1].url
+        };
+
+        chrome.bookmarks.create(bookmark);
+
+        bookmarks.splice(bookmarks.length - 1, 1);
+
+        this.saveRemovedBookmarks(bookmarks);
+      }
     }
   },
 
@@ -201,6 +275,24 @@ Vue.component("bookmarks-panel", {
     this.filterContainer = document.querySelector(".bookmarks-panel .filter");
     this.bookmarkMenu = document.querySelector(".bookmarks-panel .bookmark-menu");
     this.bookmarkPanel = document.querySelector(".bookmarks-panel");
+    let searchInputOutlineLine = document.querySelector(".bookmarks-panel .search-container .bookmark-search-input-container .outline-line");
+    let searchInput = document.querySelector(".bookmarks-panel .search-container .bookmark-search-input-container input");
+
+    searchInput.addEventListener("focus", function () {
+      new TimelineMax()
+        .fromTo(searchInputOutlineLine, .2, {
+          width: 0
+        }, {
+          width: "100%"
+        })
+    });
+
+    searchInput.addEventListener("blur", function () {
+      new TimelineMax()
+        .to(searchInputOutlineLine, 0, {
+          width: 0
+        })
+    });
 
     Utils.clickOutOfElement(this.filterContainer, () => {
       this.closeFilterMenu();

@@ -23,5 +23,6 @@
   "copy_url": "Copy URL",
   "open_in_new_tab": "Open in new tab",
   "open_in_new_window": "Open in new window",
-  "open_in_incognito": "Open in incognito mode"
+  "open_in_incognito": "Open in incognito mode",
+  "restore_removed_bookmark": "Restore removed bookmark"
 }

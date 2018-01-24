@@ -23,5 +23,6 @@
   "copy_url": "Копировать URL",
   "open_in_new_tab": "Открыть в новой вкладке",
   "open_in_new_window": "Открыть в новом окне",
-  "open_in_incognito": "Открыть в режиме инкогнито"
+  "open_in_incognito": "Открыть в режиме инкогнито",
+  "restore_removed_bookmark": "Восстановить удаленную закладку"
 }

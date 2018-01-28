@@ -11,11 +11,12 @@ Vue.component("bookmarks-button", {
   methods: {
     showBookmarksPanel: function () {
       let tl = new TimelineMax();
+      let panelWrapper = document.querySelector(".bookmarks-wrapper");
       let panel = document.querySelector(".bookmarks-panel");
 
       tl
-        .to(panel, 0, {
-          left: "50%"
+        .set(panelWrapper, {
+          left: 0
         })
         .to(panel, .5, {
           opacity: 1
@@ -40,13 +41,14 @@ Vue.component("bookmarks-panel", {
     hidePanel()
     {
       let tl = new TimelineMax();
+      let panelWrapper = document.querySelector(".bookmarks-wrapper");
       let panel = document.querySelector(".bookmarks-panel");
 
       tl
         .to(panel, .2, {
           opacity: 0
         })
-        .to(panel, 0, {
+        .set(panelWrapper, {
           left: -9999
         });
     },
@@ -231,17 +233,23 @@ Vue.component("bookmarks-panel", {
     },
 
     openInNewTab: function () {
-      chrome.tabs.create({url: this.selectedBookmark.url});
+      chrome.tabs.create({url: this.selectedBookmark.url}, () => {
+        this.closeBookmarkMenu();
+      });
     },
 
     openInNewWindow: function () {
-      chrome.windows.create({url: this.selectedBookmark.url});
+      chrome.windows.create({url: this.selectedBookmark.url}, () => {
+        this.closeBookmarkMenu();
+      });
     },
 
     openInIncognito: function () {
       chrome.windows.create({
         url: this.selectedBookmark.url,
         "incognito": true
+      }, () => {
+        this.closeBookmarkMenu();
       });
     },
 

@@ -1,3 +1,20 @@
+.bookmarks-wrapper {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  left: -9999px;
+}
+
+.bookmarks-bg-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+}
+
 .bookmarks-button {
   position: absolute;
   z-index: 29;
@@ -30,8 +47,7 @@
   width: 1000px;
   max-width: calc(100% - 28px - 28px);
   transform: translate(-50%, 0);
-  /*left: 50%;*/
-  left: -9999px;
+  left: 50%;
   opacity: 0;
   top: 10px;
   background: white;
@@ -285,7 +301,6 @@
   transform: translateX(-50%);
   opacity: 0;
   left: -9999px;
-  /*left: 50%;*/
 }
 
 .bookmarks-panel .bookmark-menu {

@@ -12,15 +12,19 @@ Vue.component("bookmarks-button", {
     showBookmarksPanel: function () {
       let tl = new TimelineMax();
       let panelWrapper = document.querySelector(".bookmarks-wrapper");
+      let panelBgOverlay = document.querySelector(".bookmarks-bg-overlay");
       let panel = document.querySelector(".bookmarks-panel");
 
       tl
         .set(panelWrapper, {
           left: 0
         })
+        .to(panelBgOverlay, .5, {
+          opacity: 1
+        })
         .to(panel, .5, {
           opacity: 1
-        });
+        }, "-=0.5");
     }
   },
 
@@ -42,15 +46,19 @@ Vue.component("bookmarks-panel", {
     {
       let tl = new TimelineMax();
       let panelWrapper = document.querySelector(".bookmarks-wrapper");
+      let panelBgOverlay = document.querySelector(".bookmarks-bg-overlay");
       let panel = document.querySelector(".bookmarks-panel");
 
       tl
         .to(panel, .2, {
           opacity: 0
         })
+        .to(panelBgOverlay, .2, {
+          opacity: 0
+        })
         .set(panelWrapper, {
           left: -9999
-        });
+        }, "-=0.2");
     },
 
     dateFormat: function (timestamp) {

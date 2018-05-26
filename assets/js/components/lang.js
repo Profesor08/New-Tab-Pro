@@ -25,7 +25,7 @@ Vue.component("lang-switcher", {
       {
         this.$http.get("assets/lang/lang-" + lang + ".json").then(function (res)
         {
-          this.lang = JSON.parse(res.data);
+          this.lang = res.data;
           commonData.lang = this.lang;
         });
       }

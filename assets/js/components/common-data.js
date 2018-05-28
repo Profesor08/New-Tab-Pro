@@ -38,7 +38,9 @@ const commonData = {
       image: '',
       name: '',
       url: ''
-    }
+    },
+    editSite: null,
+    editSiteDialog: false,
   },
   lang: [],
   showMenu: false,

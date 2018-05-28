@@ -5,14 +5,12 @@
 Vue.component("add-site-dialog", {
   template: "#add-site-dialog",
 
-  data: function ()
-  {
+  data: function () {
     return commonData;
   },
 
   methods: {
-    addSite: function ()
-    {
+    addSite: function () {
       this.sites.push(this.options.newSite);
       this.options.newSite = {
         image: '',
@@ -23,26 +21,21 @@ Vue.component("add-site-dialog", {
     }
   },
 
-  created: function ()
-  {
+  created: function () {
 
-    if (localStorage.hasOwnProperty("webSites"))
-    {
+    if (localStorage.hasOwnProperty("webSites")) {
       this.sites = JSON.parse(localStorage["webSites"]);
     }
 
-    if ('siteSize' in localStorage)
-    {
+    if ('siteSize' in localStorage) {
       this.size = parseInt(localStorage["siteSize"]);
     }
 
-    if ('siteBorderColor' in localStorage)
-    {
+    if ('siteBorderColor' in localStorage) {
       this.siteBorderColor = localStorage["siteBorderColor"];
     }
 
-    if ('siteBackgroundColor' in localStorage)
-    {
+    if ('siteBackgroundColor' in localStorage) {
       this.siteBackgroundColor = localStorage["siteBackgroundColor"];
     }
 
@@ -50,29 +43,52 @@ Vue.component("add-site-dialog", {
   }
 });
 
-Vue.component("sites", {
-  template: "#sites",
+Vue.component("edit-site-dialog", {
+  template: "#edit-site-dialog",
 
-  data: function ()
-  {
+  data: function () {
     return commonData;
   },
 
   methods: {
-    deleteSite: function (index)
-    {
-      this.sites.splice(index, 1);
+    editSite: function () {
+      this.sites[this.options.editSite.id].name = this.options.editSite.name;
+      this.sites[this.options.editSite.id].url = this.options.editSite.url;
+      this.sites[this.options.editSite.id].image = this.options.editSite.image;
+      this.options.editSiteDialog = false;
+      this.options.editSite = null;
       localStorage["webSites"] = JSON.stringify(this.sites);
     }
   },
 
-  updated: function ()
-  {
+  created: function () {
+    console.log("Edit site dialog component loaded.");
+  }
+});
+
+Vue.component("sites", {
+  template: "#sites",
+
+  data: function () {
+    return commonData;
+  },
+
+  methods: {
+    deleteSite: function (index) {
+      this.sites.splice(index, 1);
+      localStorage["webSites"] = JSON.stringify(this.sites);
+    },
+
+    openEditSiteDialog: function (index) {
+      this.options.editSite = Object.assign({}, this.sites[index], {id: index});
+      this.options.editSiteDialog = true;
+    }
+  },
+
+  updated: function () {
 
 
-
-    if (this.options.active && this.active)
-    {
+    if (this.options.active && this.active) {
       let config = {
         align: "center",
         animationSpeed: 150,
@@ -83,32 +99,27 @@ Vue.component("sites", {
         animateOnInit: false
       };
 
-      if (this.sitesGrid !== null)
-      {
+      if (this.sitesGrid !== null) {
         this.sitesGrid.shapeshift(config);
       }
-      else
-      {
+      else {
         this.sitesGrid = $(".sites-grid");
 
         this.sitesGrid.shapeshift(config);
 
-        this.sitesGrid.on("ss-rearranged", (event) =>
-        {
+        this.sitesGrid.on("ss-rearranged", (event) => {
           let arrangedSites = [];
 
-          $(event.currentTarget).children(".site").each((index, element) =>
-          {
+          $(event.currentTarget).children(".site").each((index, element) => {
             let orig = $(element).data("orig");
 
-            if (orig !== undefined)
-            {
+            if (orig !== undefined) {
               $(element).attr("data-orig", index);
 
               arrangedSites.push({
                 name: this.sites[orig].name,
                 url: this.sites[orig].url,
-                image:this.sites[orig].image
+                image: this.sites[orig].image
               });
             }
           });
@@ -117,10 +128,8 @@ Vue.component("sites", {
         });
       }
     }
-    else
-    {
-      if (this.sitesGrid !== null)
-      {
+    else {
+      if (this.sitesGrid !== null) {
         this.sitesGrid.trigger("ss-destroy");
         this.sitesGrid.css("height", "");
         this.sitesGrid = null;
@@ -129,8 +138,7 @@ Vue.component("sites", {
 
   },
 
-  created: function ()
-  {
+  created: function () {
     console.log("Sites component loaded.");
   }
 });
@@ -138,34 +146,29 @@ Vue.component("sites", {
 Vue.component("site-resize", {
   template: "#site-resize",
 
-  data: function ()
-  {
+  data: function () {
     return commonData;
   },
 
   methods: {},
 
-  mounted: function ()
-  {
+  mounted: function () {
     $("#site-button-size").slider({
       orientation: "horizontal",
       min: 75,
       max: 250,
       value: this.size,
       step: 1,
-      slide: (event, ui) =>
-      {
+      slide: (event, ui) => {
         this.size = ui.value;
       },
-      change: (event, ui) =>
-      {
+      change: (event, ui) => {
         localStorage["siteSize"] = ui.value;
       }
     });
   },
 
-  created: function ()
-  {
+  created: function () {
     console.log("Site resize slider component loaded.");
   }
 });
@@ -173,16 +176,13 @@ Vue.component("site-resize", {
 Vue.component("sites-button", {
   template: "#sites-button",
 
-  data: function ()
-  {
+  data: function () {
     return commonData;
   },
 
   methods: {
-    showSites: function (show)
-    {
-      if (show === false && this.sitesGrid !== null)
-      {
+    showSites: function (show) {
+      if (show === false && this.sitesGrid !== null) {
         this.sitesGrid.trigger("ss-destroy");
       }
 
@@ -192,10 +192,8 @@ Vue.component("sites-button", {
     }
   },
 
-  created: function ()
-  {
-    if ("showSites" in localStorage)
-    {
+  created: function () {
+    if ("showSites" in localStorage) {
       this.showSites(localStorage["showSites"] == "true");
     }
 
@@ -206,13 +204,11 @@ Vue.component("sites-button", {
 Vue.component("site-border-color", {
   template: "#site-border-color",
 
-  data: function ()
-  {
+  data: function () {
     return commonData;
   },
 
-  mounted: function ()
-  {
+  mounted: function () {
 
     let data = {
       showAlpha: true,
@@ -220,8 +216,7 @@ Vue.component("site-border-color", {
       showButtons: false,
       preferredFormat: "hex",
       showInput: true,
-      move: (color) =>
-      {
+      move: (color) => {
         this.siteBorderColor = color.toRgbString();
         localStorage["siteBorderColor"] = this.siteBorderColor;
       }
@@ -230,8 +225,7 @@ Vue.component("site-border-color", {
     $(".site-border-color").spectrum(data);
   },
 
-  created: function ()
-  {
+  created: function () {
     console.log("Site border color component loaded.");
   }
 });
@@ -239,13 +233,11 @@ Vue.component("site-border-color", {
 Vue.component("site-background-color", {
   template: "#site-background-color",
 
-  data: function ()
-  {
+  data: function () {
     return commonData;
   },
 
-  mounted: function ()
-  {
+  mounted: function () {
 
     let data = {
       showAlpha: true,
@@ -253,8 +245,7 @@ Vue.component("site-background-color", {
       showButtons: false,
       preferredFormat: "hex",
       showInput: true,
-      move: (color) =>
-      {
+      move: (color) => {
         this.siteBackgroundColor = color.toRgbString();
         localStorage["siteBackgroundColor"] = this.siteBackgroundColor;
       }
@@ -263,8 +254,7 @@ Vue.component("site-background-color", {
     $(".site-background-color").spectrum(data);
   },
 
-  created: function ()
-  {
+  created: function () {
     console.log("Site background color component loaded.");
   }
 });
@@ -272,13 +262,11 @@ Vue.component("site-background-color", {
 Vue.component("page-background-color", {
   template: "#page-background-color",
 
-  data: function ()
-  {
+  data: function () {
     return commonData;
   },
 
-  mounted: function ()
-  {
+  mounted: function () {
 
     let data = {
       showAlpha: true,
@@ -286,8 +274,7 @@ Vue.component("page-background-color", {
       showButtons: false,
       preferredFormat: "hex",
       showInput: true,
-      move: (color) =>
-      {
+      move: (color) => {
         this.pageBackgroundColor = color.toRgbString();
         localStorage["pageBackgroundColor"] = this.pageBackgroundColor;
 
@@ -300,16 +287,13 @@ Vue.component("page-background-color", {
     $(".page-background-color").spectrum(data);
   },
 
-  created: function ()
-  {
+  created: function () {
 
-    if ('pageBackgroundColor' in localStorage)
-    {
+    if ('pageBackgroundColor' in localStorage) {
       this.pageBackgroundColor = localStorage["pageBackgroundColor"];
     }
 
-    if ('pageBackgroundColorTransparent' in localStorage)
-    {
+    if ('pageBackgroundColorTransparent' in localStorage) {
       this.pageBackgroundColorTransparent = localStorage["pageBackgroundColorTransparent"];
     }
 

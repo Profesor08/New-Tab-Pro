@@ -281,17 +281,26 @@ canvas#FlyingThroughTheSpace.active, canvas#Snow.active, canvas#Clouds.active {
   height: 17px;
 }
 
-.site .delete {
+.site .site-control {
   position: absolute;
-  top: 2px;
-  right: 3px;
-  color: red;
-  cursor: pointer;
   transition: ease-in-out all 100ms;
 }
 
-.site .delete:hover {
+.site .site-control:hover {
   transform: scale(1.2);
+  cursor: pointer;
+}
+
+.site .site-control.delete-control {
+  top: 2px;
+  right: 3px;
+  color: red;
+}
+
+.site .site-control.edit-control {
+  top: 3px;
+  right: 20px;
+  color: green;
 }
 
 .site.add {

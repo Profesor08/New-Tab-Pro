@@ -11,13 +11,19 @@ Vue.component("add-site-dialog", {
 
   methods: {
     addSite: function () {
-      this.sites.push(this.options.newSite);
-      this.options.newSite = {
-        image: '',
-        name: '',
-        url: ''
-      };
-      localStorage["webSites"] = JSON.stringify(this.sites);
+      ImgToDataUrl.convert(this.options.newSite.image).then(dataUrl => {
+        this.options.newSite.image = dataUrl;
+
+        this.sites.push(this.options.newSite);
+
+        this.options.newSite = {
+          image: '',
+          name: '',
+          url: ''
+        };
+
+        localStorage["webSites"] = JSON.stringify(this.sites);
+      });
     }
   },
 
@@ -52,12 +58,14 @@ Vue.component("edit-site-dialog", {
 
   methods: {
     editSite: function () {
-      this.sites[this.options.editSite.id].name = this.options.editSite.name;
-      this.sites[this.options.editSite.id].url = this.options.editSite.url;
-      this.sites[this.options.editSite.id].image = this.options.editSite.image;
-      this.options.editSiteDialog = false;
-      this.options.editSite = null;
-      localStorage["webSites"] = JSON.stringify(this.sites);
+      ImgToDataUrl.convert(this.options.editSite.image).then(dataUrl => {
+        this.sites[this.options.editSite.id].name = this.options.editSite.name;
+        this.sites[this.options.editSite.id].url = this.options.editSite.url;
+        this.sites[this.options.editSite.id].image = dataUrl;
+        this.options.editSiteDialog = false;
+        this.options.editSite = null;
+        localStorage["webSites"] = JSON.stringify(this.sites);
+      });
     }
   },
 

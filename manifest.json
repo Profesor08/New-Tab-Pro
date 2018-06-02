@@ -19,7 +19,7 @@
       "bookmarks", "chrome://favicon/", "history", "https://www.bnm.md/*", "http://worldweatheronline.com/", "http://sypexgeo.net/", "http://ajax.googleapis.com/*", "https://google.com/", "http://127.0.0.1/", "http://www.calend.ru/"
    ],
    
-   "version": "2.2.6",
+   "version": "2.2.7",
    "web_accessible_resources": [ "index.html" ],
    
    "browser_action":{

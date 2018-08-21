@@ -4,7 +4,8 @@ menu-dialog {
   background: #f4f4f4;
   border-radius: 2px;
   padding: 8px 0;
-  transition: box-shadow 250ms; }
+  transition: box-shadow 250ms;
+}
 
 menu-dialog button {
   display: block;
@@ -17,19 +18,21 @@ menu-dialog button {
   text-align: left;
   border: 0;
   background: transparent;
-  outline: none; }
+  outline: none;
+}
 
 menu-dialog button:hover, menu-dialog button:focus {
-  background: #e0e0e0;
-  cursor: pointer; }
+  background: rgba(224, 224, 224, 1);
+  cursor: pointer;
+}
 
 menu-dialog button:active, menu-dialog button.selected {
-  background: #e0ebfd; }
+  background: rgba(224, 235, 253, 1);
+}
 
 menu-dialog hr {
   background: rgba(0, 0, 0, 0.11);
   border-width: 0;
   height: 1px;
-  margin: 8px 0; }
-
-/*# sourceMappingURL=dialog.css.map */
+  margin: 8px 0;
+}

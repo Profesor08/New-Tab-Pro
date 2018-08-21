@@ -1,25 +1,23 @@
 ::-webkit-scrollbar {
-  width: 6px;
-}
+  width: 6px; }
 
 ::-webkit-scrollbar-button {
   width: 0;
-  height: 0;
-}
+  height: 0; }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
+  background: rgba(0, 0, 0, 0.1); }
 
-::-webkit-scrollbar-track-piece { /* 4 */
-}
+::-webkit-scrollbar-track-piece {
+  /* 4 */ }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.3);
-}
+  background: rgba(0, 0, 0, 0.3); }
 
-::-webkit-scrollbar-corner { /* 6 */
-}
+::-webkit-scrollbar-corner {
+  /* 6 */ }
 
-::-webkit-resizer { /* 7 */
-}
+::-webkit-resizer {
+  /* 7 */ }
+
+/*# sourceMappingURL=scrollbar.css.map */

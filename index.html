@@ -2,14 +2,17 @@
 <html xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
   
-  <link type="text/css" rel="stylesheet" href="assets/js/external/jquery-ui-1.12.1/jquery-ui.min.css">
-  <link type="text/css" rel="stylesheet" href="assets/js/external/jquery-ui-1.12.1/jquery-ui.structure.min.css">
-  <link type="text/css" rel="stylesheet" href="assets/js/external/jquery-ui-1.12.1/jquery-ui.theme.min.css">
-  <link type="text/css" rel="stylesheet" href="assets/js/external/spectrum/spectrum.css">
+  <!--<link type="text/css" rel="stylesheet" href="assets/js/external/jquery-ui-1.12.1/jquery-ui.min.css">-->
+  <!--<link type="text/css" rel="stylesheet" href="assets/js/external/jquery-ui-1.12.1/jquery-ui.structure.min.css">-->
+  <!--<link type="text/css" rel="stylesheet" href="assets/js/external/jquery-ui-1.12.1/jquery-ui.theme.min.css">-->
+  <!--<link type="text/css" rel="stylesheet" href="assets/js/external/spectrum/spectrum.css">-->
+  <!---->
+  <!--<link type="text/css" rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">-->
+  <!--<link type="text/css" rel="stylesheet" href="assets/css/bootstrap.min.css">-->
+  <!--<link type="text/css" rel="stylesheet" href="assets/css/sites.scss">-->
+  <!--<link type="text/css" rel="stylesheet" href="assets/css/style.css">-->
   
-  <link type="text/css" rel="stylesheet" href="assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-  <link type="text/css" rel="stylesheet" href="assets/css/bootstrap.min.css">
-  <link type="text/css" rel="stylesheet" href="assets/css/style.css">
+  <link type="text/css" rel="stylesheet" href="assets/css/main.css">
   
   <script type="text/javascript" src="assets/js/external/vue.min.js"></script>
   <script type="text/javascript" src="assets/js/external/vue-resource.min.js"></script>
@@ -212,27 +215,25 @@
   </template>
   
   <template id="sites">
-    <div v-if="active" class="tabs">
-      <div class="content sites-grid" v-bind:style="{ width: contentWidth + 'px' }">
-        <div
-            v-for="(site, index) in sites"
-            v-bind:style="{ width: size + 'px', height: size / 1.5 + 'px', borderColor: siteBorderColor, backgroundColor: siteBackgroundColor }"
-            v-bind:data-orig="index"
-            class="site">
-          <div class="name">{{ site.name }}</div>
-          <a class="link" v-bind:href="site.url">
-            <div v-bind:style="{ 'backgroundImage': 'url(' + site.image + ')'}"></div>
-          </a>
-          <div v-if="options.active" v-on:click.prevent="deleteSite(index)" class="site-control delete-control">
-            <span class="fa fa-remove"></span>
-          </div>
-          <div v-if="options.active" v-on:click.prevent="openEditSiteDialog(index)" class="site-control edit-control">
-            <span class="fa fa-pencil-square-o"></span>
-          </div>
+    <div v-if="active" class="sites-container sites-grid">
+      <div
+          v-for="(site, index) in sites"
+          v-bind:style="{ borderColor: siteBorderColor, backgroundColor: siteBackgroundColor }"
+          v-bind:data-orig="index"
+          class="site">
+        <div class="name">{{ site.name }}</div>
+        <a class="link" v-bind:href="site.url">
+          <div v-bind:style="{ 'backgroundImage': 'url(' + site.image + ')'}"></div>
+        </a>
+        <div v-if="options.active" v-on:click.prevent="deleteSite(index)" class="site-control delete-control">
+          <span class="fa fa-remove"></span>
         </div>
-        <div v-if="options.active" v-on:click="options.addSiteDialog = true" v-bind:style="{ width: size + 'px', height: size / 1.5 + 'px' }" class="site add">
-          <span class="fa fa-plus"></span>
+        <div v-if="options.active" v-on:click.prevent="openEditSiteDialog(index)" class="site-control edit-control">
+          <span class="fa fa-pencil-square-o"></span>
         </div>
+      </div>
+      <div v-if="options.active" v-on:click="options.addSiteDialog = true" v-bind:style="{ width: size + 'px', height: size / 1.5 + 'px' }" class="site add">
+        <span class="fa fa-plus"></span>
       </div>
     </div>
   </template>
